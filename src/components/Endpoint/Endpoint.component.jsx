@@ -74,6 +74,13 @@ function Endpoint() {
     
   }
 
+  function PourcentageIncoherence(){
+    let result = (endpoint.incoherenceNumber * 100)/endpoint.incoherenceTotalScore;
+    let arrondi = result.toFixed(2); // retourne une chaîne "3.33"
+    //let nombre = parseFloat(arrondi);  // convertit en nombre 3.33 si nécessaire
+    return arrondi;
+  }
+
   return (
     <div
       style={{
@@ -156,6 +163,7 @@ function Endpoint() {
       >
         <p><strong>Utilisateur :</strong> {endpoint.Utilisateur}</p>
         <p><strong>Niveau de dangerosité :</strong> {endpoint.criticalLevel} (score : {endpoint.dangerousityNumber})</p>
+        <p><strong>Pourcentage d'incoherences :</strong> {PourcentageIncoherence()}%</p>
         <p><strong>Antivirus :</strong> {endpoint.AntivirusNom} (Version {endpoint.AntivirusVersion}) — Actif : {endpoint.AntivirusActif}</p>
         <p><strong>Système :</strong> {endpoint.OperatingSystem} — Version : {endpoint.OperatingSystemVersion}</p>
         <p><strong>Adresse IP :</strong> {endpoint.IPv4Address}</p>
@@ -170,6 +178,7 @@ function Endpoint() {
         <p><strong>Comptes mauvais logins :</strong> {endpoint.BadLogonCount}</p>
         <p><strong>Etat de chiffrement du disque :</strong> {endpoint.etatChiffrement}</p>
         <p><strong>Non Conformes :</strong> {endpoint.ConformitiesChecked?.join(', ') || 'Aucune'}</p>
+        <p><strong>Incoherences :</strong> {endpoint.incoherences?.join(', ') || 'Aucune'}</p>
         <p><strong>Composants :</strong> {endpoint.Composites?.join(', ') || 'Aucune'}</p>
         <p><strong>Date de création :</strong> {new Date(endpoint.whenCreated).toLocaleDateString()}</p>
         <p><strong>Date de derniere analyse complete :</strong> {new Date(endpoint.DerniereAnalyseComplete).toLocaleDateString()}</p>
