@@ -1,8 +1,24 @@
 import axios from 'axios';
 
-//Appelle l'API pour la suppression d'un utilisateur
+// Appelle l'API pour la suppression d'un utilisateur
 function deleteUser(id) {
-  return axios.delete(`http://localhost:5000/api/admin/delete/${id}`);
+  try {
+    const session = localStorage.getItem('adminSession');
+    if (!session) throw new Error('Pas de session en localStorage');
+
+    const { token } = JSON.parse(session);
+    if (!token) throw new Error('Token manquant dans la session');
+
+    return axios.delete(`http://localhost:5000/api/admin/delete/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    
+  } catch (err) {
+    console.error('Erreur lors de la récupération du token:', err.message);
+    return Promise.reject(err);
+  }
 }
 
 export default deleteUser;

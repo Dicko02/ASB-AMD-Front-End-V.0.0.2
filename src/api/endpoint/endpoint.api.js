@@ -1,8 +1,26 @@
 import axios from 'axios';
 
-//Appelle l'API pour récupérer un endpoint
-function fetchEndpoint(CN) {
-  return axios.get(`http://localhost:5000/api/fusion/${CN}`);
+// Appelle l'API pour récupérer un endpoint par CN
+async function fetchEndpoint(CN) {
+  try {
+    const session = localStorage.getItem('adminSession');
+    if (!session) throw new Error('Session introuvable');
+
+    const { token } = JSON.parse(session);
+    if (!token) throw new Error('Token manquant dans la session');
+
+    const response = await axios.get(`http://localhost:5000/api/fusion/${CN}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response;
+  } catch (error) {
+    const message = error.response?.data?.message || 'Échec de la récupération du endpoint';
+    console.error('Erreur fetchEndpoint:', message);
+    throw new Error(message);
+  }
 }
 
 export default fetchEndpoint;
