@@ -24,19 +24,17 @@ function UsersListe() {
       }
     }
     
-  
     chargerUsers();
   }, 
     
   []/* 👈 Dépendances vides pour charger une seule fois */ );
 
-
   const filteredAdmins = users.filter(admin =>
     admin.pseudo.toLowerCase().includes(filter.toLowerCase())
   );
 
-  async function handleDelete(id) {
-    const confirm = window.confirm('Êtes-vous sûr de vouloir supprimer cet administrateur ?');
+  async function handleDelete(id, pseudo, titre) {
+    const confirm = window.confirm(`Êtes-vous sûr de vouloir supprimer le compte ${titre} ${pseudo} ?`);
     if (!confirm) return;
 
     try {
@@ -52,6 +50,14 @@ function UsersListe() {
     navigate(`/UsersManagement/${id}`);// Redirection
   };
 
+  function addUser(){
+    navigate("/AddUser");
+  };
+
+  const adminSessionStr = localStorage.getItem('adminSession'); // chaîne JSON
+  const adminSession = JSON.parse(adminSessionStr); // maintenant un objet JS
+  const titre = adminSession.titre;
+
   if (loading){
     return <Loading text="chargement de la liste des utilisateurs..." />;
   };
@@ -66,7 +72,7 @@ function UsersListe() {
       boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
       fontFamily: 'Arial, sans-serif'
     }}>
-      <h2 style={{ textAlign: 'center', marginBottom: '20px', color: '#343a40' }}>
+      <h2 style={{ textAlign: 'center', marginBottom: '10px', color: '#343a40' }}>
         Liste des Administrateurs
       </h2>
 
@@ -80,10 +86,22 @@ function UsersListe() {
           padding: '12px 16px',
           borderRadius: '8px',
           border: '1px solid #ced4da',
-          marginBottom: '20px',
           fontSize: '16px'
         }}
       />
+
+      <button onClick={() => addUser()}
+        style={{
+          backgroundColor: 'lightgreen',
+            border: 'none',
+            padding: '8px 14px',
+            margin: '10px auto',
+            borderRadius: '6px',
+            cursor: 'pointer',
+            fontSize: '30px',
+            display: titre === 'Super Admin' ? 'block' : 'none'
+        }}
+      >➕</button>
 
       <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
         {filteredAdmins.length > 0 ? (
@@ -123,7 +141,7 @@ function UsersListe() {
                   📝
                 </button>
 
-                <button onClick={() => handleDelete(admin._id)} style={{
+                <button onClick={() => handleDelete(admin._id, admin.pseudo, admin.titre)} style={{
                   backgroundColor: '#F08080',
                   color: 'black',
                   border: 'none',
@@ -146,7 +164,7 @@ function UsersListe() {
             fontStyle: 'italic',
             marginTop: '30px'
           }}>
-            Aucun administrateur ne correspond à votre recherche.
+            Aucun compte utilisateur ne correspond à votre recherche.
           </li>
         )}
       </ul>

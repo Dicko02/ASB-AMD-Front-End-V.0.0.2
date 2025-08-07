@@ -114,6 +114,7 @@ function UserAdd({ admin, onSuccess }) {
           </option>
           <option value="Admin">Admin</option>
           <option value="Super Admin">Super Admin</option>
+          <option value="Reader">Reader</option>
         </select>
       </div>
 

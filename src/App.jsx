@@ -12,7 +12,11 @@ const UsersModif = lazy(() => import('./pages/User/UserModif.page'));
 const UsersManagement = lazy(() => import('./pages/User/UsersManagement.page'));
 const UsersAdd = lazy(() => import('./pages/User/UserAdd.page'));
 const Setting = lazy(() => import('./pages/Setting.page'));
-const Connexion = lazy(() => import('./pages/Connexion.page'))
+const Connexion = lazy(() => import('./pages/Connexion.page'));
+const LogsPage = lazy(() => import('./pages/logsPage.page'));
+const AppLogsPage = lazy(() => import('./pages/logsPage/AppLogs.page'));
+const AccessLogsPage = lazy(() => import('./pages/logsPage/AccessLogs.page'));
+const HistoryLogsPage = lazy(() => import('./pages/logsPage/HistoryLogs.page'));
 
 function App() {
   return (
@@ -32,6 +36,10 @@ function App() {
           <Route path="/UsersManagement/:id" element={<PrivateRoute><UsersModif /></PrivateRoute>} />
           <Route path="/AddUser" element={<PrivateRoute><UsersAdd /></PrivateRoute>} />
           <Route path="/Setting" element={<PrivateRoute><Setting /></PrivateRoute>} />
+          <Route path="/Logs" element={<PrivateRoute><LogsPage /></PrivateRoute>} />
+          <Route path="/Logs/HistoryLogsPage" element={<PrivateRoute><HistoryLogsPage /></PrivateRoute>} />
+          <Route path="/Logs/AccessLogsPage" element={<PrivateRoute><AccessLogsPage /></PrivateRoute>} />
+          <Route path="/Logs/AppLogsPage" element={<PrivateRoute><AppLogsPage /></PrivateRoute>} />
         </Routes>
       </Suspense>
     </Router>

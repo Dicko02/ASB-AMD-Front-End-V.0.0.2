@@ -185,6 +185,16 @@ function EndpointsList() {
     navigate(`/${row.CN}`);// Redirection vers /api/CN (par exemple /api/LP-KAMARA)
   };
 
+  const adminSessionStr = localStorage.getItem('adminSession'); // chaîne JSON
+  const adminSession = JSON.parse(adminSessionStr); // maintenant un objet JS
+  const titre = adminSession.titre;
+  const SA = "Super Admin";
+  const AD = "Admin";
+
+  let isVisibleADOrSA = false;
+  if(titre === AD || titre === SA){
+    isVisibleADOrSA = true;
+  }
 
   return (
     // Application du thème à toute l’interface
@@ -204,7 +214,7 @@ function EndpointsList() {
         {/* Tableau principal avec DataGrid */}
         <div
           style={{
-            height: 450,
+            height: 500,
             width: '100%',
             backgroundColor: '#fff',
             borderRadius: '8px',
@@ -233,6 +243,7 @@ function EndpointsList() {
                 fontSize: '0.875rem',
                 cursor: 'pointer',
                 transition: 'background-color 0.3s',
+                display: isVisibleADOrSA ? 'block' : 'none'
               }}
               onMouseEnter={e => e.currentTarget.style.backgroundColor = '#e5e7eb'}
               onMouseLeave={e => e.currentTarget.style.backgroundColor = '#f3f4f6'}
@@ -250,6 +261,7 @@ function EndpointsList() {
                 fontSize: '0.875rem',
                 cursor: 'pointer',
                 transition: 'background-color 0.3s',
+                display: isVisibleADOrSA ? 'block' : 'none'
               }}
               onMouseEnter={e => e.currentTarget.style.backgroundColor = '#e5e7eb'}
               onMouseLeave={e => e.currentTarget.style.backgroundColor = '#f3f4f6'}

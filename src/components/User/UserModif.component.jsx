@@ -67,7 +67,6 @@ function UserModif({ admin, onSuccess }) {
           type="text"
           value={pseudo}
           onChange={(e) => setPseudo(e.target.value)}
-          required
           style={{
             width: '100%',
             padding: '10px 14px',
@@ -83,7 +82,6 @@ function UserModif({ admin, onSuccess }) {
         <select
           value={titre}
           onChange={(e) => setTitre(e.target.value)}
-          required
           style={{
             width: '100%',
             padding: '10px 14px',
@@ -95,6 +93,7 @@ function UserModif({ admin, onSuccess }) {
           <option value="" disabled>--Niveau d'administration--</option>
           <option value="Admin">Admin</option>
           <option value="Super Admin">Super Admin</option>
+          <option value="Reader">Reader</option>
         </select>
       </div>
 

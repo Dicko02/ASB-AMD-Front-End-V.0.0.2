@@ -28,7 +28,7 @@ function Connexion() {
         token: data.token
       }));
 
-      navigate('/accueil');
+      navigate('/DashBoard');
     } catch (err) {
       setErreur(err.message || 'Identifiants incorrects');
       setLoading(false); // désactive le loading en cas d'erreur

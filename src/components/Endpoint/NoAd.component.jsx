@@ -36,6 +36,17 @@ function NoADEndpointsList() {
     return <Loading text="Chargement de la liste des endpoints noAD..." />;
   }
 
+  const adminSessionStr = localStorage.getItem('adminSession'); // chaîne JSON
+  const adminSession = JSON.parse(adminSessionStr); // maintenant un objet JS
+  const titre = adminSession.titre;
+  const SA = "Super Admin";
+  const AD = "Admin";
+
+  let isVisibleADOrSA = false;
+  if(titre === AD || titre === SA){
+    isVisibleADOrSA = true;
+  }
+
   return (
     <div className="p-6 space-y-6">
       {/* Boutons d'export */}
@@ -50,6 +61,7 @@ function NoADEndpointsList() {
                 fontSize: '0.875rem',
                 cursor: 'pointer',
                 transition: 'background-color 0.3s',
+                display: isVisibleADOrSA ? 'block' : 'none'
             }}
             onMouseEnter={e => e.currentTarget.style.backgroundColor = '#e5e7eb'}
             onMouseLeave={e => e.currentTarget.style.backgroundColor = '#f3f4f6'}
@@ -67,6 +79,7 @@ function NoADEndpointsList() {
                 fontSize: '0.875rem',
                 cursor: 'pointer',
                 transition: 'background-color 0.3s',
+                display: isVisibleADOrSA ? 'block' : 'none'
             }}
             onMouseEnter={e => e.currentTarget.style.backgroundColor = '#e5e7eb'}
             onMouseLeave={e => e.currentTarget.style.backgroundColor = '#f3f4f6'}

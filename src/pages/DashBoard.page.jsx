@@ -91,6 +91,17 @@ function DashBoardPage() {
     );
   }
 
+  const adminSessionStr = localStorage.getItem('adminSession'); // chaîne JSON
+  const adminSession = JSON.parse(adminSessionStr); // maintenant un objet JS
+  const titre = adminSession.titre;
+  const SA = "Super Admin";
+  const AD = "Admin";
+
+  let isVisibleADOrSA = false;
+  if(titre === AD || titre === SA){
+    isVisibleADOrSA = true;
+  }
+
   return (
     <div style={{ display: 'flex' }}>
       <SidebarToggle />
@@ -123,6 +134,7 @@ function DashBoardPage() {
               fontSize: '0.875rem',
               cursor: 'pointer',
               transition: 'background-color 0.3s',
+              display: isVisibleADOrSA ? 'block' : 'none'
             }}
             onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#e5e7eb')}
             onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#f3f4f6')}
@@ -140,6 +152,7 @@ function DashBoardPage() {
               fontSize: '0.875rem',
               cursor: 'pointer',
               transition: 'background-color 0.3s',
+              display: isVisibleADOrSA ? 'block' : 'none'
             }}
             onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#e5e7eb')}
             onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#f3f4f6')}

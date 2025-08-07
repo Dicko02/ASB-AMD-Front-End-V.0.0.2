@@ -17,10 +17,16 @@ export default function SidebarToggle() {
   const pseudo = adminSession.pseudo;
   const titre = adminSession.titre;
   const SA = "Super Admin"
+  const AD = "Admin"
 
-  let isVisible = false;
+  let isVisibleSA = false;
   if(titre === SA){
-    isVisible = true;
+    isVisibleSA = true;
+  }
+
+  let isVisibleADOrSA = false;
+  if(titre === AD || titre === SA){
+    isVisibleADOrSA = true;
   }
 
 
@@ -121,27 +127,27 @@ export default function SidebarToggle() {
               <a href="/Accueil" style={{ color: '#374151', textDecoration: 'none' }}
                 onMouseOver={(e) => (e.currentTarget.style.color = '#2563eb')}
                 onMouseOut={(e) => (e.currentTarget.style.color = '#374151')}
-              >Accueil</a>
+              >Liste des Endpoints</a>
 
               <a href="/NoAD" style={{ color: '#374151', textDecoration: 'none' }}
                 onMouseOver={(e) => (e.currentTarget.style.color = '#2563eb')}
                 onMouseOut={(e) => (e.currentTarget.style.color = '#374151')}
-              >NoAD</a>
+              >Liste des NoAD</a>
 
               <a href="/DashBoard" style={{ color: '#374151', textDecoration: 'none' }}
                 onMouseOver={(e) => (e.currentTarget.style.color = '#2563eb')}
                 onMouseOut={(e) => (e.currentTarget.style.color = '#374151')}
               >Tableau de Bord</a>
 
-              <a href="/UsersManagement" style={{ color: '#374151', textDecoration: 'none', display: isVisible ? 'block' : 'none' }}
+              <a href="/UsersManagement" style={{ color: '#374151', textDecoration: 'none', display: isVisibleSA ? 'block' : 'none' }}
                 onMouseOver={(e) => (e.currentTarget.style.color = '#2563eb')}
                 onMouseOut={(e) => (e.currentTarget.style.color = '#374151')}
               >Liste des Utilisateurs</a>
 
-              <a href="/AddUser" style={{ color: '#374151', textDecoration: 'none', display: isVisible ? 'block' : 'none' }}
+              <a href="/Logs" style={{ color: '#374151', textDecoration: 'none' }}
                 onMouseOver={(e) => (e.currentTarget.style.color = '#2563eb')}
                 onMouseOut={(e) => (e.currentTarget.style.color = '#374151')}
-              >Ajoute un Utilisateur</a>
+              >Voir les logs</a>
             </nav>
           </div>
 
@@ -193,6 +199,7 @@ export default function SidebarToggle() {
                 padding: 0,
                 fontSize: '1.2rem',
                 color: '#6b7280', // gris neutre
+                display: isVisibleADOrSA ? 'block' : 'none'
               }}
             >
               ⚙️

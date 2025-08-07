@@ -4,12 +4,14 @@ import fetchEndpoint from '../../api/endpoint/endpoint.api';
 import Loading from '../Complements/Loading.component';
 import exporteCSV from '../../utils/Export/ExportCSV';
 import {exportePDFDetailEndpoint} from '../../utils/Export/ExportPDF';
+import critiquesDurablesEndpoint from '../../utils/critiquesDurablesEndpoint'
 
 function Endpoint() {
   const { CN } = useParams();
   const [endpoint, setEndpoint] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [critiquesDurables, setCritiquesDurables] = useState(null);
 
   useEffect(() => {
     async function loadData() {
@@ -28,6 +30,22 @@ function Endpoint() {
       loadData();
     }
   }, [CN]);
+
+  useEffect(() => {
+    async function fetchCritiques() {
+      try {
+        if (endpoint?.CN) {
+          const data = await critiquesDurablesEndpoint(endpoint.CN);
+          setCritiquesDurables(data);
+        }
+      } catch (err) {
+        console.error("Erreur lors de l'analyse des critiques durables", err);
+      }
+    }
+
+    fetchCritiques();
+  }, [endpoint]);
+
 
   if (loading){
     return <Loading text="Chargement des details..." />;
@@ -81,6 +99,17 @@ function Endpoint() {
     return arrondi;
   }
 
+  const adminSessionStr = localStorage.getItem('adminSession'); // chaîne JSON
+  const adminSession = JSON.parse(adminSessionStr); // maintenant un objet JS
+  const titre = adminSession.titre;
+  const SA = "Super Admin";
+  const AD = "Admin";
+
+  let isVisibleADOrSA = false;
+  if(titre === AD || titre === SA){
+    isVisibleADOrSA = true;
+  }
+
   return (
     <div
       style={{
@@ -112,6 +141,7 @@ function Endpoint() {
             fontSize: '0.875rem',
             cursor: 'pointer',
             transition: 'background-color 0.3s',
+            display: isVisibleADOrSA ? 'block' : 'none'
           }}
           onMouseEnter={e => e.currentTarget.style.backgroundColor = '#e5e7eb'}
           onMouseLeave={e => e.currentTarget.style.backgroundColor = '#f3f4f6'}
@@ -129,6 +159,7 @@ function Endpoint() {
             fontSize: '0.875rem',
             cursor: 'pointer',
             transition: 'background-color 0.3s',
+            display: isVisibleADOrSA ? 'block' : 'none'
           }}
           onMouseEnter={e => e.currentTarget.style.backgroundColor = '#e5e7eb'}
           onMouseLeave={e => e.currentTarget.style.backgroundColor = '#f3f4f6'}
@@ -180,6 +211,11 @@ function Endpoint() {
         <p><strong>Non Conformes :</strong> {endpoint.ConformitiesChecked?.join(', ') || 'Aucune'}</p>
         <p><strong>Incoherences :</strong> {endpoint.incoherences?.join(', ') || 'Aucune'}</p>
         <p><strong>Composants :</strong> {endpoint.Composites?.join(', ') || 'Aucune'}</p>
+        {critiquesDurables && (
+          <p>
+            <strong>Résultat d'analyse des logs :</strong> {critiquesDurables.endpoint} est au niveau de conformité {critiquesDurables.niveau} depuis {critiquesDurables.jours} jours ({critiquesDurables.depuis} - {critiquesDurables.jusqua})
+          </p>
+        )}
         <p><strong>Date de création :</strong> {new Date(endpoint.whenCreated).toLocaleDateString()}</p>
         <p><strong>Date de derniere analyse complete :</strong> {new Date(endpoint.DerniereAnalyseComplete).toLocaleDateString()}</p>
         <p><strong>Date de derniere mise a jour des bases antivirus :</strong> {new Date(endpoint.DerniereMiseAJourBasesAntivirus).toLocaleDateString()}</p>
