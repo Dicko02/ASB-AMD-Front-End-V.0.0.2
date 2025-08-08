@@ -150,7 +150,7 @@ function Endpoint() {
         </button>
 
         <button
-          onClick={() => exportePDFDetailEndpoint(endpoint, `endpoint-${endpoint.CN || 'unique'}`)}
+          onClick={() => exportePDFDetailEndpoint(`endpoint-${endpoint.CN || 'unique'}.pdf`)}
           style={{
             backgroundColor: '#f3f4f6',
             border: '1px solid #ccc',
@@ -168,59 +168,61 @@ function Endpoint() {
         </button>
       </div>
 
-      {/* Titre de l'endpoint */}
-      <h1
-        style={{
-          textAlign: 'center',
-          marginBottom: 30,
-          fontSize: '28px',
-          color: '#1f2937',
-          borderColor: 'black'
-        }}
-      >
-        {endpoint.CN} - {Conforme()}
-      </h1>
+      <div id="detail-endpoint">
+        {/* Titre de l'endpoint */}
+          <h1
+            style={{
+              textAlign: 'center',
+              marginBottom: 30,
+              fontSize: '28px',
+              color: '#1f2937',
+              borderColor: 'black'
+            }}
+          >
+            {endpoint.CN} - {Conforme()}
+          </h1>
 
-      {/* Détail de l'endpoint */}
-      <div
-        style={{
-          border: '1px solid #e5e7eb',
-          borderRadius: 8,
-          padding: 20,
-          marginBottom: 20,
-          boxShadow: '0 2px 6px rgba(0,0,0,0.1)',
-          backgroundColor: '#fff',
-        }}
-      >
-        <p><strong>Utilisateur :</strong> {endpoint.Utilisateur}</p>
-        <p><strong>Niveau de dangerosité :</strong> {endpoint.criticalLevel} (score : {endpoint.dangerousityNumber})</p>
-        <p><strong>Pourcentage d'incoherences :</strong> {PourcentageIncoherence()}%</p>
-        <p><strong>Antivirus :</strong> {endpoint.AntivirusNom} (Version {endpoint.AntivirusVersion}) — Actif : {endpoint.AntivirusActif}</p>
-        <p><strong>Système :</strong> {endpoint.OperatingSystem} — Version : {endpoint.OperatingSystemVersion}</p>
-        <p><strong>Adresse IP :</strong> {endpoint.IPv4Address}</p>
-        <p><strong>Date dernière connexion :</strong> {new Date(endpoint.LastLogonDate).toLocaleString()}</p>
-        <p><strong>Volumes libres :</strong> {endpoint.VolumesPourcentageLibre}</p>
-        <p><strong>Nom :</strong> {endpoint.Nom}</p>
-        <p><strong>Nom DNS :</strong> {endpoint.DNSHostName}</p>
-        <p><strong>Nom Canonique :</strong> {endpoint.CanonicalName}</p>
-        <p><strong>Protection en temps Reel :</strong> {endpoint.protectionTempsReel}</p>
-        <p><strong>Statut activé :</strong> {endpoint.Enabled}</p>
-        <p><strong>Appartient a :</strong> {endpoint.groupeParent}</p>
-        <p><strong>Comptes mauvais logins :</strong> {endpoint.BadLogonCount}</p>
-        <p><strong>Etat de chiffrement du disque :</strong> {endpoint.etatChiffrement}</p>
-        <p><strong>Non Conformes :</strong> {endpoint.ConformitiesChecked?.join(', ') || 'Aucune'}</p>
-        <p><strong>Incoherences :</strong> {endpoint.incoherences?.join(', ') || 'Aucune'}</p>
-        <p><strong>Composants :</strong> {endpoint.Composites?.join(', ') || 'Aucune'}</p>
-        {critiquesDurables && (
-          <p>
-            <strong>Résultat d'analyse des logs :</strong> {critiquesDurables.endpoint} est au niveau de conformité {critiquesDurables.niveau} depuis {critiquesDurables.jours} jours ({critiquesDurables.depuis} - {critiquesDurables.jusqua})
-          </p>
-        )}
-        <p><strong>Date de création :</strong> {new Date(endpoint.whenCreated).toLocaleDateString()}</p>
-        <p><strong>Date de derniere analyse complete :</strong> {new Date(endpoint.DerniereAnalyseComplete).toLocaleDateString()}</p>
-        <p><strong>Date de derniere mise a jour des bases antivirus :</strong> {new Date(endpoint.DerniereMiseAJourBasesAntivirus).toLocaleDateString()}</p>
+          {/* Détail de l'endpoint */}
+          <div
+            style={{
+              border: '1px solid #e5e7eb',
+              borderRadius: 8,
+              padding: 20,
+              marginBottom: 20,
+              boxShadow: '0 2px 6px rgba(0,0,0,0.1)',
+              backgroundColor: '#fff',
+            }}
+          >
+            <p><strong>Utilisateur :</strong> {endpoint.Utilisateur ?? 'Inconnu'}</p>
+            <p><strong>Niveau de dangerosité :</strong> {endpoint.criticalLevel ?? 'Inconnu'} (score : {endpoint?.dangerousityNumber || 'Inconnu'})</p>
+            <p><strong>Pourcentage d'incoherences :</strong> {PourcentageIncoherence() ?? 'Inconnu'}%</p>
+            <p><strong>Antivirus :</strong> {endpoint.AntivirusNom ?? 'Inconnu'} (Version {endpoint.AntivirusVersion ?? 'Inconnu'}) — Actif : {endpoint.AntivirusActif ?? 'Inconnu'}</p>
+            <p><strong>Système :</strong> {endpoint.OperatingSystem ?? 'Inconnu'} — Version : {endpoint.OperatingSystemVersion ?? 'Inconnu'}</p>
+            <p><strong>Adresse IP :</strong> {endpoint.IPv4Address ?? 'Inconnu'}</p>
+            <p><strong>Date dernière connexion :</strong> {new Date(endpoint.LastLogonDate).toLocaleString() ?? 'Inconnu'}</p>
+            <p><strong>Volumes libres :</strong> {endpoint.VolumesPourcentageLibre ?? 'Inconnu'}</p>
+            <p><strong>Nom :</strong> {endpoint.Nom ?? 'Inconnu'}</p>
+            <p><strong>Nom DNS :</strong> {endpoint.DNSHostName ?? 'Inconnu'}</p>
+            <p><strong>Nom Canonique :</strong> {endpoint.CanonicalName ?? 'Inconnu'}</p>
+            <p><strong>Protection en temps Reel :</strong> {endpoint.protectionTempsReel ?? 'Inconnu'}</p>
+            <p><strong>Statut activé :</strong> {endpoint.Enabled ?? 'Inconnu'}</p>
+            <p><strong>Appartient a :</strong> {endpoint.groupeParent ?? 'Inconnu'}</p>
+            <p><strong>Comptes mauvais logins :</strong> {endpoint.BadLogonCount ?? 'Inconnu'}</p>
+            <p><strong>Etat de chiffrement du disque :</strong> {endpoint.etatChiffrement ?? 'Inconnu'}</p>
+            <p><strong>Non Conformes :</strong> {endpoint.ConformitiesChecked?.join(', ') || 'Aucune'}</p>
+            <p><strong>Incoherences :</strong> {endpoint.incoherences?.join(', ') || 'Aucune'}</p>
+            <p><strong>Composants :</strong> {endpoint.Composites?.join(', ') || 'Aucune'}</p>
+            {critiquesDurables && (
+              <p>
+                <strong>Résultat d'analyse des logs :</strong> {critiquesDurables.endpoint ?? 'Inconnu'} est au niveau de conformité {critiquesDurables.niveau ?? 'Inconnu'} depuis {critiquesDurables.jours ?? 'Inconnu'} jours ({new Date(critiquesDurables.depuis).toLocaleDateString() ?? 'Inconnu'} - {new Date(critiquesDurables.jusqua).toLocaleDateString() ?? 'Inconnu'})
+              </p>
+            )}
+            <p><strong>Date de création :</strong> {new Date(endpoint.whenCreated).toLocaleDateString() ?? 'Inconnu'}</p>
+            <p><strong>Date de derniere analyse complete :</strong> {new Date(endpoint.DerniereAnalyseComplete).toLocaleDateString() ?? 'Inconnu'}</p>
+            <p><strong>Date de derniere mise a jour des bases antivirus :</strong> {new Date(endpoint.DerniereMiseAJourBasesAntivirus).toLocaleDateString() ?? 'Inconnu'}</p>
+          </div>
+        </div>
       </div>
-    </div>
   );
 
 }

@@ -15,7 +15,6 @@ async function fetchCritiquesDurables() {
       },
     });
 
-    console.log("response-fetch:", response)
     return response;
   } catch (error) {
     const message = error.response?.data?.message || 'Échec de la récupération des endpoints critiques durables';

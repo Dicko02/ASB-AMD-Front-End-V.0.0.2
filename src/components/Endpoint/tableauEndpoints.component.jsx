@@ -165,7 +165,7 @@ function EndpointsList() {
     criticalLevel: true,
     description: true,
     updatedAt: true,
-    conformity: true,
+    conformity: false,
   });
 
   if (loading){
@@ -252,7 +252,7 @@ function EndpointsList() {
             </button>
 
             <button
-              onClick={() => exportePDFListeEndpoints(endpoints, 'Liste des endpoints')}
+              onClick={() => exportePDFListeEndpoints(endpoints, 'Liste des endpoints.pdf')}
               style={{
                 backgroundColor: '#f3f4f6',
                 border: '1px solid #ccc',

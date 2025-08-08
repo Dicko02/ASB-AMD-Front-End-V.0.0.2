@@ -1,5 +1,6 @@
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
+import html2canvas from 'html2canvas';
 
 function exportePDFListeEndpoints(data, baseName = 'liste-endpoints') {
   const rows = Array.isArray(data) ? data : [data];
@@ -111,90 +112,52 @@ function exportePDFListeEndpoints(data, baseName = 'liste-endpoints') {
 
 
 
-function exportePDFDetailEndpoint(data, baseName = 'detail-endpoint') {
-  if (!data) return;
-
-  const doc = new jsPDF({
-    orientation: 'portrait',
-    unit: 'pt',
-    format: 'a4',
-  });
-
-  // Titre centré
-  doc.setFontSize(18);
-  doc.setFont('helvetica', 'bold');
-  const pageWidth = doc.internal.pageSize.getWidth();
-  const titleText = `Détail endpoint – ${baseName}`;
-  const titleWidth = doc.getTextWidth(titleText);
-  doc.text(titleText, (pageWidth - titleWidth) / 2, 40);
-
-  // Clés à exclure de l'affichage
-  const excludeKeys = [
-    '_id',
-    '__v'
-  ];
-
-  // Filtrer les clés à afficher (et trier alphabétiquement pour clarté)
-  const keys = Object.keys(data)
-    .filter(k => !excludeKeys.includes(k))
-    .sort();
-
-  let y = 70; // position de départ verticale
-  const lineHeight = 16; // hauteur de ligne
-  const keyX = 40;       // marge gauche pour les noms
-  const valX = 200;      // marge gauche pour les valeurs (à droite du nom)
-
-  doc.setFontSize(11);
-  doc.setFont('helvetica', 'bold');
-
-  keys.forEach((key) => {
-    // Nom de la clé (en gras)
-    doc.text(`${key} :`, keyX, y);
-
-    doc.setFont('helvetica', 'normal');
-
-    // Valeur formattée
-    let val = data[key];
-
-    if (val === null || val === undefined) val = '';
-    else if (Array.isArray(val)) val = val.join(', ');
-    else if (val instanceof Date) val = val.toLocaleString();
-    else if (typeof val === 'object') val = JSON.stringify(val, null, 2);
-
-    // Gérer les longues valeurs : on fait un split manuel en lignes si trop long
-    const maxWidth = pageWidth - valX - 40;
-    const splitText = doc.splitTextToSize(val.toString(), maxWidth);
-
-    doc.text(splitText, valX, y);
-
-    // Calculer la hauteur utilisée (nombre de lignes * lineHeight)
-    const heightUsed = splitText.length * lineHeight;
-
-    y += Math.max(lineHeight, heightUsed) + 6; // ajoute un espacement de 6 pts
-
-    // Gestion de page si y dépasse la page
-    if (y > doc.internal.pageSize.getHeight() - 40) {
-      doc.addPage();
-      y = 40; // nouvelle page, départ plus bas
-    }
-
-    doc.setFont('helvetica', 'bold');
-  });
-
-  // Pied de page avec numéro de page
-  const pageCount = doc.getNumberOfPages();
-  for (let i = 1; i <= pageCount; i++) {
-    doc.setPage(i);
-    doc.setFontSize(8);
-    doc.setTextColor(0);
-    doc.text(
-      `Page ${i} / ${pageCount}`,
-      pageWidth - 60,
-      doc.internal.pageSize.getHeight() - 15
-    );
+async function exportePDFDetailEndpoint(elementId, nomFichier = 'detail-endpoint') {
+  const element = document.getElementById(elementId);
+  if (!element) {
+    console.error(`Élément avec l'ID "${elementId}" introuvable`);
+    return;
   }
 
-  doc.save(`${baseName}.pdf`);
+  try {
+    const canvas = await html2canvas(element, { scale: 2 });
+    const imgData = canvas.toDataURL('image/png');
+
+    const pdf = new jsPDF({
+      orientation: 'portrait',
+      unit: 'mm',
+      format: 'a4',
+    });
+
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+
+    const imgWidth = pageWidth;
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+    let position = 0;
+
+    if (imgHeight < pageHeight) {
+      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+    } else {
+      // Gérer contenu qui dépasse une page
+      let remainingHeight = imgHeight;
+      let y = 0;
+
+      while (remainingHeight > 0) {
+        pdf.addImage(imgData, 'PNG', 0, y, imgWidth, imgHeight);
+        remainingHeight -= pageHeight;
+        if (remainingHeight > 0) {
+          pdf.addPage();
+          y -= pageHeight;
+        }
+      }
+    }
+
+    pdf.save(nomFichier);
+  } catch (err) {
+    console.error("Erreur lors de l'export PDF :", err);
+  }
 }
 
 

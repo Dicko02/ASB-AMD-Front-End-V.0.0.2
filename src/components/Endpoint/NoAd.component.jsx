@@ -70,7 +70,7 @@ function NoADEndpointsList() {
         </button>
 
         <button
-            onClick={() => exportePDFNoAD(endpoints, 'Liste des endpoints noAD')}
+            onClick={() => exportePDFNoAD(endpoints, 'Liste des endpoints noAD.pdf')}
             style={{
                 backgroundColor: '#f3f4f6',
                 border: '1px solid #ccc',
@@ -98,10 +98,10 @@ function NoADEndpointsList() {
           <div key={endpoint._id} className="border rounded-lg p-4 shadow-sm bg-white">
             <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center">
               <div className="text-left space-y-1">
-                <p><strong>Nom de l'endpoint :</strong> {endpoint.Nom}</p>
-                <p><strong>Nom de l'utilisateur :</strong> {endpoint.Utilisateur}</p>
-                <p><strong>Lieu :</strong> {endpoint.Lieu}</p>
-                <p><strong>Mis à jour le :</strong> {formattedDate}</p>
+                <p><strong>Nom de l'endpoint :</strong> {endpoint.Nom ?? 'Inconnu'}</p>
+                <p><strong>Nom de l'utilisateur :</strong> {endpoint.Utilisateur ?? 'Inconnu'}</p>
+                <p><strong>Lieu :</strong> {endpoint.Lieu ?? 'Inconnu'}</p>
+                <p><strong>Mis à jour le :</strong> {formattedDate ?? 'Inconnu'}</p>
               </div>
 
               <button
@@ -115,15 +115,15 @@ function NoADEndpointsList() {
             {/* Détails étendus */}
             {isOpen && (
               <div className="mt-4 border-t pt-4 text-sm text-gray-700 space-y-1">
-                <p><strong>Antivirus :</strong> {endpoint.AntivirusNom} (v{endpoint.AntivirusVersion}) — Actif : {endpoint.AntivirusActif}</p>
-                <p><strong>Protection en temps réel :</strong> {endpoint.protectionTempsReel}</p>
-                <p><strong>Système :</strong> {endpoint.OperatingSystem} — Version : {endpoint.OperatingSystemVersion || 'N/A'}</p>
-                <p><strong>Volumes libres :</strong> {endpoint.VolumesPourcentageLibre}</p>
-                <p><strong>État de chiffrement du disque :</strong> {endpoint.etatChiffrement}</p>
+                <p><strong>Antivirus :</strong> {endpoint.AntivirusNom ?? 'Inconnu'} (v{endpoint.AntivirusVersion ?? 'Inconnu'}) — Actif : {endpoint.AntivirusActif ?? 'Inconnu'}</p>
+                <p><strong>Protection en temps réel :</strong> {endpoint.protectionTempsReel ?? 'Inconnu'}</p>
+                <p><strong>Système :</strong> {endpoint.OperatingSystem ?? 'Inconnu'} — Version : {endpoint.OperatingSystemVersion || 'N/A'}</p>
+                <p><strong>Volumes libres :</strong> {endpoint.VolumesPourcentageLibre ?? 'Inconnu'}</p>
+                <p><strong>État de chiffrement du disque :</strong> {endpoint.etatChiffrement ?? 'Inconnu'}</p>
                 <p><strong>Composants :</strong> {endpoint.Composites?.join(', ') || 'Aucun'}</p>
-                <p><strong>Date de création :</strong> {new Date(endpoint.createdAt).toLocaleDateString('fr-FR')}</p>
-                <p><strong>Dernière analyse complète :</strong> {new Date(endpoint.DerniereAnalyseComplete).toLocaleDateString('fr-FR')}</p>
-                <p><strong>Dernière mise à jour des bases antivirus :</strong> {new Date(endpoint.DerniereMiseAJourBasesAntivirus).toLocaleDateString('fr-FR')}</p>
+                <p><strong>Date de création :</strong> {new Date(endpoint.createdAt).toLocaleDateString('fr-FR') ?? 'Inconnu'}</p>
+                <p><strong>Dernière analyse complète :</strong> {new Date(endpoint.DerniereAnalyseComplete).toLocaleDateString('fr-FR') ?? 'Inconnu'}</p>
+                <p><strong>Dernière mise à jour des bases antivirus :</strong> {new Date(endpoint.DerniereMiseAJourBasesAntivirus).toLocaleDateString('fr-FR') ?? 'Inconnu'}</p>
               </div>
             )}
           </div>
