@@ -194,6 +194,7 @@ function Endpoint() {
             }}
           >
             <p><strong>Utilisateur :</strong> {endpoint.Utilisateur ?? 'Inconnu'}</p>
+            <p><strong>Type de machine :</strong> {endpoint.typeMachine}</p>
             <p><strong>Niveau de dangerosité :</strong> {endpoint.criticalLevel ?? 'Inconnu'} (score : {endpoint?.dangerousityNumber || 'Inconnu'})</p>
             <p><strong>Pourcentage d'incoherences :</strong> {PourcentageIncoherence() ?? 'Inconnu'}%</p>
             <p><strong>Antivirus :</strong> {endpoint.AntivirusNom ?? 'Inconnu'} (Version {endpoint.AntivirusVersion ?? 'Inconnu'}) — Actif : {endpoint.AntivirusActif ?? 'Inconnu'}</p>
