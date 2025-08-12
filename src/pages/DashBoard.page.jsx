@@ -107,7 +107,6 @@ function DashBoardPage() {
       <SidebarToggle />
       <main
         style={{
-          marginLeft: '16rem',
           width: '100%',
           padding: '1.5rem',
           backgroundColor: '#f3f4f6',
