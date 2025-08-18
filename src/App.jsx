@@ -17,6 +17,7 @@ const LogsPage = lazy(() => import('./pages/logsPage.page'));
 const AppLogsPage = lazy(() => import('./pages/logsPage/AppLogs.page'));
 const AccessLogsPage = lazy(() => import('./pages/logsPage/AccessLogs.page'));
 const HistoryLogsPage = lazy(() => import('./pages/logsPage/HistoryLogs.page'));
+const NotFound = lazy(() => import('./pages/NotFound/NotFound.page'));
 
 function App() {
   return (
@@ -28,9 +29,9 @@ function App() {
           <Route path="/" element={<Connexion />} />
 
           {/* Page d'accueil (protégée) */}
-          <Route path="/Accueil" element={<PrivateRoute><Accueil /></PrivateRoute>}/>
+          <Route path="/Endpoints" element={<PrivateRoute><Accueil /></PrivateRoute>}/>
           <Route path="/NoAD" element={<PrivateRoute><NoAD /></PrivateRoute>}/>
-          <Route path="/:CN" element={<PrivateRoute><Endpoint /></PrivateRoute>} />
+          <Route path="/Endpoints/:CN" element={<PrivateRoute><Endpoint /></PrivateRoute>} />
           <Route path="/DashBoard" element={<PrivateRoute><DashBoard /></PrivateRoute>} />
           <Route path="/UsersManagement" element={<PrivateRoute><UsersManagement /></PrivateRoute>} />
           <Route path="/UsersManagement/:id" element={<PrivateRoute><UsersModif /></PrivateRoute>} />
@@ -40,6 +41,7 @@ function App() {
           <Route path="/Logs/HistoryLogsPage" element={<PrivateRoute><HistoryLogsPage /></PrivateRoute>} />
           <Route path="/Logs/AccessLogsPage" element={<PrivateRoute><AccessLogsPage /></PrivateRoute>} />
           <Route path="/Logs/AppLogsPage" element={<PrivateRoute><AppLogsPage /></PrivateRoute>} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>
     </Router>

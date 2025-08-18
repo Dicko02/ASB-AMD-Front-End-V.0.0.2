@@ -1,11 +1,11 @@
 import Papa from 'papaparse';
 import { saveAs } from 'file-saver';
 import jsPDF from 'jspdf';
-import 'jspdf-autotable'; // correction ici : on importe le plugin sans récupération de variable
+import autoTable from 'jspdf-autotable'; // correction ici : on importe le plugin sans récupération de variable
 
 //Exportation des données du tableau de bord en CSV composé de 3 sections : Statistiques globales, Répartition en %, Évolution mensuelle
 function exportDashboardCSV(
-  { stats, percentages, monthly },
+  { stats, NoComposantStats, percentages, monthly },
   baseName = 'dashboard-info',
 ) {
   if (!stats || !percentages || !monthly) return;
@@ -13,6 +13,12 @@ function exportDashboardCSV(
   // Section "Statistiques(pivot → metric,value)"
   const statsCsv = Papa.unparse(
     Object.entries(stats).map(([k, v]) => ({ metric: k, value: v })),
+    { header: true, delimiter: ';' },
+  );
+
+  // Section "Statistiques(pivot → metric,value)"
+  const NoComposantStatsCsv = Papa.unparse(
+    Object.entries(NoComposantStats).map(([k, v]) => ({ metric: k, value: v })),
     { header: true, delimiter: ';' },
   );
 
@@ -32,6 +38,8 @@ function exportDashboardCSV(
   const fullCsv =
     '#STATISTIQUES\n' +
     statsCsv +
+    '\n\n#NO-COMPOSANTS_STATISTIQUES\n' +
+    NoComposantStatsCsv +
     '\n\n#REPARTITION(%)\n' +
     pctCsv +
     '\n\n#EVOLUTION_MENSUELLE\n' +
@@ -47,13 +55,14 @@ function exportDashboardCSV(
 
 //Exportation des mêmes données en PDF
 function exportDashboardPDF(
-  { stats, percentages, monthly },
+  { stats, NoComposantStats, percentages, monthly },
   baseName = 'dashboard-info',
 ) {
-  if (!stats || !percentages || !monthly) return;
+  if (!stats || !NoComposantStats || !percentages || !monthly) return;
 
   // Préparation des tables
   const statsBody = Object.entries(stats).map(([k, v]) => [k, v]);
+  const NoComposantStatsBody = Object.entries(NoComposantStats).map(([k, v]) => [k, v]);
   const pctBody   = Object.entries(percentages).map(([k, v]) => [k, v + '%']);
   const monthlyCols = Object.keys(monthly[0] ?? {});
   const monthlyBody = monthly.map((row) => monthlyCols.map((c) => row[c]));
@@ -63,8 +72,8 @@ function exportDashboardPDF(
   doc.setFontSize(18);
   doc.text('Tableau de bord', 40, 40);
 
-  //Table 1 : Statistiques globales
-  doc.autoTable({
+  //Table 1.1 : Statistiques globales
+  autoTable(doc, {
     startY: 70,
     head  : [['Métrique', 'Valeur']],
     body  : statsBody,
@@ -73,8 +82,18 @@ function exportDashboardPDF(
     margin: { left: 40, right: 40 },
   });
 
+  //Table 1.2 : Statistiques globales(No-Composites)
+  autoTable(doc, {
+    startY: doc.lastAutoTable.finalY + 30,
+    head  : [['Métrique', 'Valeur']],
+    body  : NoComposantStatsBody,
+    theme : 'striped',
+    styles: { fontSize: 9 },
+    margin: { left: 40, right: 40 },
+  });
+
   //Table 2 : Répartition en %
-  doc.autoTable({
+  autoTable(doc, {
     startY: doc.lastAutoTable.finalY + 30,
     head  : [['Criticité', 'Pourcentage']],
     body  : pctBody,
@@ -84,7 +103,7 @@ function exportDashboardPDF(
   });
 
   // Table 3 : Évolution mensuelle
-  doc.autoTable({
+  autoTable(doc, {
     startY: doc.lastAutoTable.finalY + 30,
     head  : [monthlyCols],
     body  : monthlyBody,

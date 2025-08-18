@@ -182,7 +182,7 @@ function EndpointsList() {
 
 
   const viewDescription = (row) => {
-    navigate(`/${row.CN}`);// Redirection vers /api/CN (par exemple /api/LP-KAMARA)
+    navigate(`/Endpoints/${row.CN}`);// Redirection vers /api/CN (par exemple /api/LP-KAMARA)
   };
 
   const adminSessionStr = localStorage.getItem('adminSession'); // chaîne JSON

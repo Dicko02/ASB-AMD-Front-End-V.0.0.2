@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import SidebarToggle from '../components/Complements/SideBar.component';
 import Loading from '../components/Complements/Loading.component';
 import StatCard from '../components/DashBoard/StatCard.component';
+import EndpointCompositeStatCard from '../components/DashBoard/EndpointCompositeStatCard.component'
 import PieArcLabel from '../components/DashBoard/PieArc.component';
 import BarChartEndpoints from '../components/DashBoard/Bars.component';
 
@@ -17,6 +18,12 @@ import countCriticalPriorityEndpoints from '../utils/EndpointPriorityLevelNumber
 import PercentageConvertion from '../utils/PercentageConvertion';
 import AllCriticalyNumberPerMonth from '../utils/CriticatlyLevelNumberAndDate/AllCriticalyNumberPerMonth';
 
+// Fonctions des No-Composants
+import countTotalEndpoints from '../utils/endpointComposantCount/EndpointTotalCount';
+import countEndpointsNoAD from '../utils/endpointComposantCount/NoAD';
+import countEndpointsNoKaspersky from '../utils/endpointComposantCount/NoKaspersky';
+import countEndpointsNoGLPI from '../utils/endpointComposantCount/NoGLPI';
+
 function DashBoardPage() {
   const [loading, setLoading] = useState(true);
 
@@ -28,6 +35,12 @@ function DashBoardPage() {
     const medium  = await countMediumPriorityEndpoints();
     const high    = await countHighPriorityEndpoints();
     const critical = await countCriticalPriorityEndpoints();
+
+    // Bloc statistiques No Composants
+    const NoTotal   = await countTotalEndpoints();
+    const NoAD     = await countEndpointsNoAD();
+    const NoKaspersky  = await countEndpointsNoKaspersky();
+    const NoGLPI    = await countEndpointsNoGLPI();
 
     // Bloc pourcentages
     const percentages = {
@@ -42,13 +55,14 @@ function DashBoardPage() {
     const monthly = monthlyRaw.map(item => ({
       mois: item.nom,
       faibles: item.low,
-      modérés: item.medium,
+      moyens: item.medium,
       hauts: item.high,
       critiques: item.critical,
     }));
 
     return {
       stats: { total, low, medium, high, critical },
+      NoComposantStats: { NoTotal, NoAD, NoKaspersky, NoGLPI },
       percentages,
       monthly,
     };
@@ -170,6 +184,7 @@ function DashBoardPage() {
           }}
         >
           <StatCard />
+          <EndpointCompositeStatCard />
         </div>
 
         {/* 📊 Graphiques */}

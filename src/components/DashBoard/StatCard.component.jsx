@@ -53,7 +53,7 @@ function StatCard() {
     >
       <div style={{ width: '100%' }}>
         <div style={{ fontWeight: 'bold', marginBottom: '12px', fontSize: '18px' }}>
-          Total : {total}
+          Total-N : {total}
         </div>
 
         <div style={{

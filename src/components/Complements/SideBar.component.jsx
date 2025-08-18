@@ -124,7 +124,7 @@ export default function SidebarToggle() {
                 gap: '1rem',
               }}
             >
-              <a href="/Accueil" style={{ color: '#374151', textDecoration: 'none' }}
+              <a href="/Endpoints" style={{ color: '#374151', textDecoration: 'none' }}
                 onMouseOver={(e) => (e.currentTarget.style.color = '#2563eb')}
                 onMouseOut={(e) => (e.currentTarget.style.color = '#374151')}
               >Liste des Endpoints</a>
