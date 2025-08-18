@@ -92,9 +92,10 @@ function Endpoint() {
     
   }
 
-  function PourcentageIncoherence(){
-    let result = (endpoint.incoherenceNumber * 100)/endpoint.incoherenceTotalScore;
-    let arrondi = result.toFixed(2); // retourne une chaîne "3.33"
+  function PourcentageCoherence(){
+    let resultV1 = (endpoint.incoherenceNumber * 100)/endpoint.incoherenceTotalScore;
+    let resultV2 = 100 - resultV1;
+    let arrondi = resultV2.toFixed(2); // retourne une chaîne "3.33"
     //let nombre = parseFloat(arrondi);  // convertit en nombre 3.33 si nécessaire
     return arrondi;
   }
@@ -196,7 +197,7 @@ function Endpoint() {
             <p><strong>Utilisateur :</strong> {endpoint.Utilisateur ?? 'Inconnu'}</p>
             <p><strong>Type de machine :</strong> {endpoint.typeMachine}</p>
             <p><strong>Niveau de dangerosité :</strong> {endpoint.criticalLevel ?? 'Inconnu'} (score : {endpoint?.dangerousityNumber || 'Inconnu'})</p>
-            <p><strong>Pourcentage d'incoherences :</strong> {PourcentageIncoherence() ?? 'Inconnu'}%</p>
+            <p><strong>Pourcentage de coherence :</strong> {PourcentageCoherence() ?? 'Inconnu'}%</p>
             <p><strong>Antivirus :</strong> {endpoint.AntivirusNom ?? 'Inconnu'} (Version {endpoint.AntivirusVersion ?? 'Inconnu'}) — Actif : {endpoint.AntivirusActif ?? 'Inconnu'}</p>
             <p><strong>Système :</strong> {endpoint.OperatingSystem ?? 'Inconnu'} — Version : {endpoint.OperatingSystemVersion ?? 'Inconnu'}</p>
             <p><strong>Adresse IP :</strong> {endpoint.IPv4Address ?? 'Inconnu'}</p>

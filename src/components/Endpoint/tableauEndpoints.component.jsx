@@ -61,7 +61,7 @@ function EndpointsList() {
 
     {
         field: 'dangerousityNumber',
-        headerName: 'Numéro de dangerosité',
+        headerName: 'Niveau de criticité',
         width: 180,
         cellClassName: 'cell-center',
     },
