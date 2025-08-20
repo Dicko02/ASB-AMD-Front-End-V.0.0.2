@@ -92,7 +92,6 @@ function DashBoardPage() {
           style={{
             padding: '1.5rem',
             width: '100%',
-            backgroundColor: '#f3f4f6',
             minHeight: '100vh',
             display: 'flex',
             justifyContent: 'center',
@@ -123,7 +122,6 @@ function DashBoardPage() {
         style={{
           width: '100%',
           padding: '1.5rem',
-          backgroundColor: '#f3f4f6',
           minHeight: '100vh',
           boxSizing: 'border-box',
         }}

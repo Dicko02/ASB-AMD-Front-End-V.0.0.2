@@ -22,7 +22,6 @@ function EndpointPage() {
           style={{
             padding: '1.5rem',
             width: '100%',
-            backgroundColor: '#f3f4f6',
             minHeight: '100vh',
             boxSizing: 'border-box',
             display: 'flex',

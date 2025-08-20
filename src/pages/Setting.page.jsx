@@ -11,7 +11,6 @@ function Setting() {
         style={{
           padding: '1.5rem',
           width: '100%',
-          backgroundColor: '#f3f4f6',
           minHeight: '100vh',
           display: 'flex',
           flexDirection: 'column',

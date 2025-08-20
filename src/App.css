@@ -1,7 +1,43 @@
 /* App.css */
 body {
-  margin: 0; /* enlève les marges par défaut */
+  margin: 0;
   padding: 0;
-  background-color: #1e3a8a; /* bleu nuit par exemple */
+  min-height: 100vh;
   font-family: Arial, sans-serif;
+
+  /* Dégradé diagonal : haut-gauche -> bas-droit */
+  background: linear-gradient(
+    315deg,
+    #dbe2e9 0%,
+    #e6ebf0 15%,
+    rgba(253, 133, 133, 0.6) 20%,
+    rgba(255, 108, 108, 0.6) 30%,
+    rgba(248, 152, 152, 0.6) 40%,
+    #80b8f9 45%,
+    #6aacf8 80%,
+    #e4e7ea 85%,
+    #cad0d5 100%
+  );
+
+  background-size: 350% 350%;  
+  animation: riverFlow 55s linear infinite; /* mouvement continu et fluide */
+}
+
+/* Animation subtile : le dégradé “coulant” */
+@keyframes riverFlow {
+  0% {
+    background-position: 0% 0%;
+  }
+  25% {
+    background-position: 50% 50%;
+  }
+  50% {
+    background-position: 100% 100%; /* glisse diagonalement */
+  }
+  75% {
+    background-position: 50% 50%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
 }
