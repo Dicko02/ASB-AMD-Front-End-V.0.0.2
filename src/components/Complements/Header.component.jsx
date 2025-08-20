@@ -26,8 +26,8 @@ function Header({ title = "Tableau de bord" }) {
           src="/cms.svg"
           alt="Logo entreprise"
           style={{
-            height: '60px',
-            width: '60px',
+            height: '50px',
+            width: '50px',
             objectFit: 'contain',
           }}
         />
