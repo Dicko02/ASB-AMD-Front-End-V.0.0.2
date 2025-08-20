@@ -1,0 +1,7 @@
+/* App.css */
+body {
+  margin: 0; /* enlève les marges par défaut */
+  padding: 0;
+  background-color: #1e3a8a; /* bleu nuit par exemple */
+  font-family: Arial, sans-serif;
+}
