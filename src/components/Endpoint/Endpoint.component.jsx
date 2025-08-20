@@ -151,7 +151,7 @@ function Endpoint() {
         </button>
 
         <button
-          onClick={() => exportePDFDetailEndpoint(`endpoint-${endpoint.CN || 'unique'}.pdf`)}
+          onClick={() => exportePDFDetailEndpoint(endpoint._id, `endpoint-${endpoint.CN || 'unique'}.pdf`)}
           style={{
             backgroundColor: '#f3f4f6',
             border: '1px solid #ccc',
@@ -169,7 +169,7 @@ function Endpoint() {
         </button>
       </div>
 
-      <div id="detail-endpoint">
+      <div id={endpoint._id}>
         {/* Titre de l'endpoint */}
           <h1
             style={{
@@ -196,7 +196,7 @@ function Endpoint() {
           >
             <p><strong>Utilisateur :</strong> {endpoint.Utilisateur ?? 'Inconnu'}</p>
             <p><strong>Type de machine :</strong> {endpoint.typeMachine}</p>
-            <p><strong>Niveau de dangerosité :</strong> {endpoint.criticalLevel ?? 'Inconnu'} (score : {endpoint?.dangerousityNumber || 'Inconnu'})</p>
+            <p><strong>Niveau de dangerosité :</strong> {endpoint.criticalLevel ?? 'Inconnu'} (score : {endpoint?.dangerousityNumber ?? 'Inconnu'})</p>
             <p><strong>Pourcentage de coherence :</strong> {PourcentageCoherence() ?? 'Inconnu'}%</p>
             <p><strong>Antivirus :</strong> {endpoint.AntivirusNom ?? 'Inconnu'} (Version {endpoint.AntivirusVersion ?? 'Inconnu'}) — Actif : {endpoint.AntivirusActif ?? 'Inconnu'}</p>
             <p><strong>Système :</strong> {endpoint.OperatingSystem ?? 'Inconnu'} — Version : {endpoint.OperatingSystemVersion ?? 'Inconnu'}</p>
