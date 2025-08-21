@@ -9,7 +9,7 @@ async function fetchUser(id) {
     const { token } = JSON.parse(session);
     if (!token) throw new Error('Token manquant');
 
-    const response = await axios.get(`http://localhost:5000/api/admin/${id}`, {
+    const response = await axios.get(`http://${import.meta.env.VITE_API_IP}:${import.meta.env.VITE_API_PORT}/api/admin/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }

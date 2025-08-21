@@ -9,7 +9,7 @@ async function updateConformityTable({ adminId, selectedValues }) {
     const { token } = JSON.parse(session);
     if (!token) throw new Error('Token manquant dans la session');
 
-    const response = await axios.put('http://localhost:5000/api/conformitySetting', {
+    const response = await axios.put(`http://${import.meta.env.VITE_API_IP}:${import.meta.env.VITE_API_PORT}/api/conformitySetting`, {
       adminId,
       conformityToCheck: selectedValues
     }, {

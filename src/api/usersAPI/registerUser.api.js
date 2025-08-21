@@ -10,7 +10,7 @@ async function registerAdmin({ pseudo, titre, password }) {
     if (!token) throw new Error('Token manquant dans la session');
 
     const response = await axios.post(
-      'http://localhost:5000/api/admin/register',
+      `http://${import.meta.env.VITE_API_IP}:${import.meta.env.VITE_API_PORT}/api/admin/register`,
       { pseudo, titre, password },
       {
         headers: {

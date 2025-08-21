@@ -15,7 +15,7 @@ async function fetchLogsDownload(logType) {
 
     // 2️⃣ Appelle le backend avec le type de log
     const response = await axios.get(
-      `http://localhost:5000/api/logs/download/${logType}`,
+      `http://${import.meta.env.VITE_API_IP}:${import.meta.env.VITE_API_PORT}/api/logs/download/${logType}`,
       {
         headers: { Authorization: `Bearer ${token}` },
         responseType: 'blob', // Réponse en flux binaire (fichier)

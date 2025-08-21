@@ -9,7 +9,7 @@ async function fetchAccessLogs() {
     const { token } = JSON.parse(session);
     if (!token) throw new Error('Token manquant dans la session');
 
-    const response = await axios.get('http://localhost:5000/api/logs/access', {
+    const response = await axios.get(`http://${import.meta.env.VITE_API_IP}:${import.meta.env.VITE_API_PORT}/api/logs/access`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

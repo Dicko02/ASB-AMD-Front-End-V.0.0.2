@@ -10,7 +10,7 @@ async function updateAdmin({ pseudo, titre, password }, id) {
     if (!token) throw new Error('Token manquant dans la session');
 
     const response = await axios.put(
-      `http://localhost:5000/api/admin/update/${id}`,
+      `http://${import.meta.env.VITE_API_IP}:${import.meta.env.VITE_API_PORT}/api/admin/update/${id}`,
       { pseudo, titre, password },
       {
         headers: {

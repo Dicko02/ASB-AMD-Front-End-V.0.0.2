@@ -9,7 +9,7 @@ function deleteUser(id) {
     const { token } = JSON.parse(session);
     if (!token) throw new Error('Token manquant dans la session');
 
-    return axios.delete(`http://localhost:5000/api/admin/delete/${id}`, {
+    return axios.delete(`http://${import.meta.env.VITE_API_IP}:${import.meta.env.VITE_API_PORT}/api/admin/delete/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

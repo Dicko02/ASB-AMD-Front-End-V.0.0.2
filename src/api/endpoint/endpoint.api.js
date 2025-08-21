@@ -9,7 +9,7 @@ async function fetchEndpoint(CN) {
     const { token } = JSON.parse(session);
     if (!token) throw new Error('Token manquant dans la session');
 
-    const response = await axios.get(`http://localhost:5000/api/fusion/${CN}`, {
+    const response = await axios.get(`http://${import.meta.env.VITE_API_IP}:${import.meta.env.VITE_API_PORT}/api/fusion/${CN}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
