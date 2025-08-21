@@ -119,7 +119,6 @@ function Endpoint() {
         padding: 20,
         fontFamily: 'Arial, sans-serif',
         lineHeight: 1.6,
-        backgroundColor: '#f9fafb',
         borderRadius: '10px',
       }}
     >

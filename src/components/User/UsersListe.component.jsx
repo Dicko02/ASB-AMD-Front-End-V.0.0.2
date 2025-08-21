@@ -33,14 +33,22 @@ function UsersListe() {
     admin.pseudo.toLowerCase().includes(filter.toLowerCase())
   );
 
-  async function handleDelete(id, pseudo, titre) {
-    const confirm = window.confirm(`Êtes-vous sûr de vouloir supprimer le compte ${titre} ${pseudo} ?`);
+  function handleLogout(){
+    localStorage.removeItem('adminSession');
+    window.location.href = '/';
+  };
+
+  async function handleDelete(id, pseudo1, titre, pseudo2) {
+    const confirm = window.confirm(`Êtes-vous sûr de vouloir supprimer le compte ${titre} ${pseudo1} ?`);
     if (!confirm) return;
 
     try {
       await deleteUser(id);
       setUsers(prev => prev.filter(admin => admin.id !== id));
-      console.log('✅ Utilisateur supprimé avec succès');
+      alert('✅ Utilisateur supprimé avec succès');
+      if(pseudo1 === pseudo2){
+        handleLogout();
+      }
     } catch (error) {
       console.log(`❌ Erreur lors de la suppression : ${error.message}`);
     }
@@ -53,10 +61,22 @@ function UsersListe() {
   function addUser(){
     navigate("/AddUser");
   };
+  
 
   const adminSessionStr = localStorage.getItem('adminSession'); // chaîne JSON
   const adminSession = JSON.parse(adminSessionStr); // maintenant un objet JS
   const titre = adminSession.titre;
+  const pseudo = adminSession.pseudo;
+
+  function deleteAppear(admin){
+    if(admin.pseudo === pseudo){
+      return 'block';
+    }else if(admin.titre === 'Super Admin'){
+      return 'none';
+    }else{
+      return 'block';
+    }
+  }
 
   if (loading){
     return <Loading text="chargement de la liste des utilisateurs..." />;
@@ -136,12 +156,12 @@ function UsersListe() {
                   borderRadius: '6px',
                   cursor: 'pointer',
                   fontSize: '14px',
-                  display: admin.titre === 'Super Admin' ? 'none' : 'block'
+                  display: deleteAppear(admin)
                 }}>
                   📝
                 </button>
 
-                <button onClick={() => handleDelete(admin._id, admin.pseudo, admin.titre)} style={{
+                <button onClick={() => handleDelete(admin._id, admin.pseudo, admin.titre, pseudo)} style={{
                   backgroundColor: '#F08080',
                   color: 'black',
                   border: 'none',
@@ -149,7 +169,7 @@ function UsersListe() {
                   borderRadius: '6px',
                   cursor: 'pointer',
                   fontSize: '14px',
-                  display: admin.titre === 'Super Admin' ? 'none' : 'block'
+                  display: deleteAppear(admin)
                 }}>
                   🗑️
                 </button>
