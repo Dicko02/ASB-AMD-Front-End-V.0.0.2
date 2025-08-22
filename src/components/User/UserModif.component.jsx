@@ -30,7 +30,13 @@ function UserModif({ admin, onSuccess }) {
 
     try {
       await updateAdmin({ pseudo, titre, password }, id);
-      setMessage('✅ Mise à jour réussie');
+      console.log("pseudo:", pseudo);
+      if(pseudo && id === idOfToken){
+        setMessage('✅ Mise à jour réussie, veuillez vous deconnecter puis vous reconnecter afin que vos nouvelles informations soit prises en compte');
+      }else{
+        setMessage('✅ Mise à jour réussie');
+      }
+  
       if (onSuccess) onSuccess(); // callback pour actualiser la liste ou fermer le formulaire
     } catch (error) {
       setMessage(`❌ ${error.message}`);
@@ -42,6 +48,10 @@ function UserModif({ admin, onSuccess }) {
   if (loading){
     return <Loading text={`chargement du formulaire de modification de ${pseudo}...`} />;
   }
+
+  const adminSessionStr = localStorage.getItem('adminSession'); // chaîne JSON
+  const adminSession = JSON.parse(adminSessionStr); // maintenant un objet JS
+  const idOfToken = adminSession.id;
 
   return (
     <form onSubmit={handleSubmit} style={{

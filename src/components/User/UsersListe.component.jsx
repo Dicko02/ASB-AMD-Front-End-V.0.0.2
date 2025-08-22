@@ -68,7 +68,7 @@ function UsersListe() {
   const titre = adminSession.titre;
   const pseudo = adminSession.pseudo;
 
-  function deleteAppear(admin){
+  function deleteAndModifAppear(admin){
     if(admin.pseudo === pseudo){
       return 'block';
     }else if(admin.titre === 'Super Admin'){
@@ -156,7 +156,7 @@ function UsersListe() {
                   borderRadius: '6px',
                   cursor: 'pointer',
                   fontSize: '14px',
-                  display: deleteAppear(admin)
+                  display: deleteAndModifAppear(admin)
                 }}>
                   📝
                 </button>
@@ -169,7 +169,7 @@ function UsersListe() {
                   borderRadius: '6px',
                   cursor: 'pointer',
                   fontSize: '14px',
-                  display: deleteAppear(admin)
+                  display: deleteAndModifAppear(admin)
                 }}>
                   🗑️
                 </button>
