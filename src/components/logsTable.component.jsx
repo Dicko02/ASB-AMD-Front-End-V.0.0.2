@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import fetchLogsDownload from "../api/logsAPI/fetchLogsDownload.api";
+import logsFilterer from "../utils/logsFilterer";
 
 /*
  * - data (Array) : tableau de chaînes (logs)
@@ -7,27 +8,36 @@ import fetchLogsDownload from "../api/logsAPI/fetchLogsDownload.api";
  * - logType (string) : utilisé pour l'export
  */
 
-function LogsTable({
-  data = [],
-  title = "Logs",
-  logType = "generic",
-}) {
+function LogsTable({data = [], title = "Logs", logType = "generic"}) {
   const [logs, setLogs] = useState(Array.isArray(data) ? data : []);
   const [loading, setLoading] = useState(!Array.isArray(data) || data.length === 0);
   const [error, setError] = useState("");
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
 
   useEffect(() => {
     const safe = Array.isArray(data) ? data : [];
-    setLogs(safe);
+
+    // Filtrage selon startDate/endDate
+    const filteredLogs = safe.filter(log => {
+      const logDate = logsFilterer(log); // fonction pour parser les trois formats
+      if (!logDate) return false;
+      if (startDate && logDate < startDate) return false;
+      if (endDate && logDate > endDate) return false;
+      return true;
+    });
+
+    setLogs(filteredLogs);
     setLoading(false);
-  }, [data]);
+  }, [data, startDate, endDate]); // déclenche quand data ou dates changent
+
 
   const handleExport = async () => {
     try {
-      if (typeof fetchLogsDownload === "function") {
+      if (typeof fetchLogsDownload === "function" && !startDate && !endDate) {
         await fetchLogsDownload(logType);
       } else {
-        // Export CSV avec une seule colonne "Log"
+        // Export CSV avec une seule colonne(Log)
         const header = "Log";
         const rows = logs.map((l) => `"${String(l).replace(/"/g, '""')}"`);
         const csv = [header, ...rows].join("\n");
@@ -61,11 +71,57 @@ function LogsTable({
       <div className="flex items-center justify-between mb-4">
         <h2 style={{
           fontSize: '30px',
-          marginRight: '60%',
+          marginRight: '45%',
           marginLeft: '5%',
           marginTop: '1%'
         }}>{title}</h2>
-        <button onClick={handleExport} 
+
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column', // met les éléments en colonne
+          gap: '0.25rem', // espace vertical entre eux
+          marginRight: '3%',
+          marginTop: '1%',
+          border: '1px solid #ccc',
+          borderRadius: '6px',
+          backgroundColor: '#fffafaff',
+        }}>
+
+          <div style={{color: 'black'}}>Debut: <input
+            type="date"
+            onChange={e => setStartDate(new Date(e.target.value))}
+            style={{
+                backgroundColor: '#fd858599',
+                border: '1px solid #ccc',
+                borderRadius: '6px',
+                padding: '0.2rem 0.4rem',
+                fontSize: '1rem',
+                cursor: 'pointer',
+                transition: 'background-color 0.3s',
+              }}
+            onMouseEnter={e => e.currentTarget.style.backgroundColor = '#80b8f9'}
+            onMouseLeave={e => e.currentTarget.style.backgroundColor = '#fd858599'}
+          /></div>
+
+          <div style={{color: 'black'}}>Fin: <input
+            type="date"
+            onChange={e => setEndDate(new Date(e.target.value))} 
+            style={{
+                backgroundColor: '#fd858599',
+                border: '1px solid #ccc',
+                borderRadius: '6px',
+                padding: '0.2rem 0.4rem',
+                fontSize: '1rem',
+                cursor: 'pointer',
+                transition: 'background-color 0.3s',
+              }}
+            onMouseEnter={e => e.currentTarget.style.backgroundColor = '#80b8f9'}
+            onMouseLeave={e => e.currentTarget.style.backgroundColor = '#fd858599'}
+          /></div>
+
+        </div>
+        <button
+          onClick={handleExport} 
           style={{
             backgroundColor: '#921b88ff',
             border: '1px solid #ccc',
