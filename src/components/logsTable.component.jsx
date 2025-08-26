@@ -67,7 +67,7 @@ function LogsTable({data = [], title = "Logs", logType = "generic"}) {
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-5xl mx-auto" style={{backgroundColor: 'black', color: 'white'}}>
+    <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-5xl mx-auto" style={{backgroundColor: 'black', color: 'white', borderRadius: '12px'}}>
       <div className="flex items-center justify-between mb-4">
         <h2 style={{
           fontSize: '30px',

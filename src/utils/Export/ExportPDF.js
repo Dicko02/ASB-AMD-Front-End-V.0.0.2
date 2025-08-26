@@ -120,8 +120,6 @@ async function exportePDFDetailEndpoint(elementId, nomFichier = 'detail-endpoint
   }
 
   try {
-    console.log('elementId: ', elementId);
-    console.log('element: ', element);
     const canvas = await html2canvas(element, { scale: 2 });
     const imgData = canvas.toDataURL('image/png');
 
