@@ -1,0 +1,56 @@
+.endpoint-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  background-color: #fff;
+}
+
+.endpoint-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.endpoint-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.endpoint-item:last-child {
+  border-bottom: none;
+}
+
+.endpoint-label {
+  font-weight: 600;
+  color: #374151; /* gris foncé */
+}
+
+.endpoint-value {
+  color: #111827; /* noir */
+}
+
+.endpoint-danger {
+  color: #dc2626; /* rouge */
+  font-weight: 500;
+}
+
+.endpoint-coherence {
+  color: #2563eb; /* bleu */
+}
+
+.endpoint-antivirus {
+  color: #16a34a; /* vert */
+}
+
+.endpoint-ip {
+  color: #7c3aed; /* violet */
+}
+
+.endpoint-warning {
+  color: #d97706; /* orange */
+}
