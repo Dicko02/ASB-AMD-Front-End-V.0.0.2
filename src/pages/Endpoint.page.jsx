@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import Endpoint from "../components/Endpoint/Endpoint.component";
+import Endpoint from "../components/Endpoint/Endpoint/Endpoint.component";
 import SidebarToggle from '../components/Complements/SideBar.component';
 import Header from '../components/Complements/Header.component';
 import Loading from '../components/Complements/Loading.component'; // ✅ Import du loader
