@@ -32,7 +32,7 @@ function Header({ title = "Tableau de bord" }) {
           }}
         />
         <span style={{ fontSize: '1.1rem', fontWeight: 600, color: '#1f2937' }}>
-          ABS-AMD
+          ASB-AMD
         </span>
       </div>
 

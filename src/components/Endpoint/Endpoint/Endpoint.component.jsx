@@ -93,6 +93,25 @@ function Endpoint() {
     
   }
 
+  function dangerousityColor(){
+    let CL = endpoint.criticalLevel?.toLowerCase();
+    
+    if(CL === 'low'){
+      return 'green';
+
+    }else if(CL === 'medium'){
+      return 'yellow';
+
+    }else if(CL === 'high'){
+      return 'orange';
+
+    }else if(CL === 'critical'){
+      return 'red';
+    }
+    
+  }
+
+
   function PourcentageCoherence(){
     let resultV1 = (endpoint.incoherenceNumber * 100)/endpoint.incoherenceTotalScore;
     let resultV2 = 100 - resultV1;
@@ -198,7 +217,9 @@ function Endpoint() {
 
               <li className="endpoint-item">
                 <span className="endpoint-label">Niveau de dangerosité</span>
-                <span className="endpoint-danger">
+                <span style={{
+                  color: dangerousityColor()
+                }}>
                   {endpoint.criticalLevel ?? 'Inconnu'} (score : {endpoint?.dangerousityNumber ?? 'Inconnu'})
                 </span>
               </li>
@@ -312,8 +333,7 @@ function Endpoint() {
                 <li className="endpoint-item">
                   <span className="endpoint-label">Résultat d'analyse des logs</span>
                   <span className="endpoint-value">
-                    {critiquesDurables.endpoint ?? 'Inconnu'} — Conformité {critiquesDurables.niveau ?? 'Inconnu'} 
-                    depuis {critiquesDurables.jours ?? 'Inconnu'} jours 
+                    {critiquesDurables.endpoint ?? 'Inconnu'} — Conformité {critiquesDurables.niveau ?? 'Inconnu'} depuis {critiquesDurables.jours ?? 'Inconnu'} jours 
                     ({new Date(critiquesDurables.depuis).toLocaleDateString() ?? 'Inconnu'} - {new Date(critiquesDurables.jusqua).toLocaleDateString() ?? 'Inconnu'})
                   </span>
                 </li>
@@ -330,7 +350,7 @@ function Endpoint() {
               </li>
 
               <li className="endpoint-item">
-                <span className="endpoint-label">Dernière mise à jour AV</span>
+                <span className="endpoint-label">Dernière mise à jour des bases antivirus</span>
                 <span className="endpoint-value">{new Date(endpoint.DerniereMiseAJourBasesAntivirus).toLocaleDateString() ?? 'Inconnu'}</span>
               </li>
             </ul>
