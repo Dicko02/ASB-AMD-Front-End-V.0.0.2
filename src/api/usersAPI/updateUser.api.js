@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Appelle l'API pour la mise à jour d'un admin
-async function updateAdmin({ pseudo, titre, password }, id) {
+async function updateAdmin({ pseudo, titre, status,  password }, id) {
   try {
     const session = localStorage.getItem('adminSession');
     if (!session) throw new Error('Pas de session trouvée');
@@ -11,7 +11,7 @@ async function updateAdmin({ pseudo, titre, password }, id) {
 
     const response = await axios.put(
       `http://${import.meta.env.VITE_API_IP}:${import.meta.env.VITE_API_PORT}/api/admin/update/${id}`,
-      { pseudo, titre, password },
+      { pseudo, titre, status, password },
       {
         headers: {
           Authorization: `Bearer ${token}`,

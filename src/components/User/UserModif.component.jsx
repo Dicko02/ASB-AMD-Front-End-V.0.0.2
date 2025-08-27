@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom';
 function UserModif({ admin, onSuccess }) {
   const [pseudo, setPseudo] = useState('');
   const [titre, setTitre] = useState('');
+  const [status, setStatus] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState('');
@@ -19,6 +20,7 @@ function UserModif({ admin, onSuccess }) {
     }
     setPseudo(admin.pseudo || '');
     setTitre(admin.titre || '');
+    setStatus(admin.status || '');
     setPassword('');
     setLoading(false);
   }, [admin]);
@@ -29,8 +31,7 @@ function UserModif({ admin, onSuccess }) {
     setMessage('');
 
     try {
-      await updateAdmin({ pseudo, titre, password }, id);
-      console.log("pseudo:", pseudo);
+      await updateAdmin({ pseudo, titre, status, password }, id);
       if(pseudo && id === idOfToken){
         setMessage('✅ Mise à jour réussie, veuillez vous deconnecter puis vous reconnecter afin que vos nouvelles informations soit prises en compte');
       }else{
@@ -100,10 +101,29 @@ function UserModif({ admin, onSuccess }) {
             fontSize: '16px'
           }}
         >
-          <option value="" disabled>--Niveau d'administration--</option>
+          <option value="" disabled>--Niveau d'Administration--</option>
           <option value="Admin">Admin</option>
           <option value="Super Admin">Super Admin</option>
           <option value="Reader">Reader</option>
+        </select>
+      </div>
+
+      <div style={{ marginBottom: '16px' }}>
+        <label style={{ display: 'block', marginBottom: '6px', fontWeight: 'bold' }}>Statut</label>
+        <select
+          value={status}
+          onChange={(e) => setStatus(e.target.value)}
+          style={{
+            width: '100%',
+            padding: '10px 14px',
+            borderRadius: '8px',
+            border: '1px solid #ccc',
+            fontSize: '16px'
+          }}
+        >
+          <option value="" disabled>--Statut de l'Administrateur--</option>
+          <option value="active">Actif</option>
+          <option value="inactive">Inactif</option>
         </select>
       </div>
 

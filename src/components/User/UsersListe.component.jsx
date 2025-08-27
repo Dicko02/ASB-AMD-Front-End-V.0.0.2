@@ -127,7 +127,7 @@ function UsersListe() {
         {filteredAdmins.length > 0 ? (
           filteredAdmins.map((admin) => (
             <li key={admin._id} style={{
-              backgroundColor: '#ffffff',
+              backgroundColor: admin.status === 'active' ? '#ffffff' : '#C0C0C0',
               borderRadius: '8px',
               padding: '16px',
               marginBottom: '12px',
