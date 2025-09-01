@@ -3,6 +3,7 @@ import Endpoint from "../components/Endpoint/Endpoint/Endpoint.component";
 import SidebarToggle from '../components/Complements/SideBar.component';
 import Header from '../components/Complements/Header.component';
 import Loading from '../components/Complements/Loading.component'; // ✅ Import du loader
+import Footer from '../components/Complements/Footer.component';
 
 function EndpointPage() {
   const [loading, setLoading] = useState(true);
@@ -36,7 +37,7 @@ function EndpointPage() {
   }
 
   return (
-    <div style={{ display: 'flex' }}>
+    <div>
       <SidebarToggle />
       <main
         style={{
@@ -53,6 +54,7 @@ function EndpointPage() {
           <Endpoint />
         </div>
       </main>
+      <Footer />
     </div>
   );
 }

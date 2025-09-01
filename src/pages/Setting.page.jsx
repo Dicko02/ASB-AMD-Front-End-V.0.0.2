@@ -1,6 +1,7 @@
 import SidebarToggle from '../components/Complements/SideBar.component';
 import Header from '../components/Complements/Header.component';
 import ConformitySettingCheckboxForm from '../components/Setting-Items/conformity.component'
+import Footer from '../components/Complements/Footer.component';
 
 function Setting() {
 
@@ -28,6 +29,7 @@ function Setting() {
           {<ConformitySettingCheckboxForm />}
         </div>
       </main>
+      <Footer />
     </div>
   );
 }

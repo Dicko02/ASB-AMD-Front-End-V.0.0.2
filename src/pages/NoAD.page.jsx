@@ -1,6 +1,7 @@
 import SidebarToggle from '../components/Complements/SideBar.component';
 import Header from '../components/Complements/Header.component';
 import NoADEndpointsList from '../components/Endpoint/NoAd.component';
+import Footer from '../components/Complements/Footer.component';
 
 function NoAD() {
   return (
@@ -32,6 +33,7 @@ function NoAD() {
           </div>
         </div>
       </main>
+      <Footer />
     </div>
   );
 }

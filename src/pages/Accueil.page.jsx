@@ -1,6 +1,7 @@
 import EndpointsList from '../components/Endpoint/tableauEndpoints.component';
 import SidebarToggle from '../components/Complements/SideBar.component';
 import Header from '../components/Complements/Header.component';
+import Footer from '../components/Complements/Footer.component';
 
 function Accueil() {
 
@@ -28,6 +29,7 @@ function Accueil() {
           {<EndpointsList />}
         </div>
       </main>
+      <Footer />
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import SidebarToggle from '../../components/Complements/SideBar.component';
 import Header from '../../components/Complements/Header.component';
 import UsersListe from '../../components/User/UsersListe.component';
+import Footer from '../../components/Complements/Footer.component';
 
 function UsersManagement() {
   return (
@@ -32,6 +33,7 @@ function UsersManagement() {
           </div>
         </div>
       </main>
+      <Footer />
     </div>
   );
 }

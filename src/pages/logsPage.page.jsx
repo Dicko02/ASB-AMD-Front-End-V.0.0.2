@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import SidebarToggle from '../components/Complements/SideBar.component';
 import Header from '../components/Complements/Header.component';
 import Loading from '../components/Complements/Loading.component'; // ✅ Import du loader
+import Footer from '../components/Complements/Footer.component';
 
 function LogsPage() {
   const [loading, setLoading] = useState(true);
@@ -35,7 +36,7 @@ function LogsPage() {
   }
 
   return (
-    <div style={{ display: 'flex' }}>
+    <div>
       <SidebarToggle />
       <main
         style={{
@@ -98,7 +99,9 @@ function LogsPage() {
                 ))}
             </div>
       </main>
+      <Footer />
     </div>
+    
   );
 }
 

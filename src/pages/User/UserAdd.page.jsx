@@ -1,6 +1,7 @@
 import SidebarToggle from '../../components/Complements/SideBar.component';
 import Header from '../../components/Complements/Header.component';
 import UserAdd from '../../components/User/UserAdd.component';
+import Footer from '../../components/Complements/Footer.component';
 
 function UserAddForm() {
   return (
@@ -32,6 +33,7 @@ function UserAddForm() {
           </div>
         </div>
       </main>
+      <Footer />
     </div>
   );
 }
