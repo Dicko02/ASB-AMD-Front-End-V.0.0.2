@@ -36,7 +36,7 @@ function App() {
           <Route path="/DashBoard" element={<PrivateRoute><DashBoard /></PrivateRoute>} />
           <Route path="/UsersManagement" element={<PrivateRoute><UsersManagement /></PrivateRoute>} />
           <Route path="/UsersManagement/:id" element={<PrivateRoute><UsersModif /></PrivateRoute>} />
-          <Route path="/AddUser" element={<PrivateRoute><UsersAdd /></PrivateRoute>} />
+          <Route path="/UsersManagement/AddUser" element={<PrivateRoute><UsersAdd /></PrivateRoute>} />
           <Route path="/Setting" element={<PrivateRoute><Setting /></PrivateRoute>} />
           <Route path="/Logs" element={<PrivateRoute><LogsPage /></PrivateRoute>} />
           <Route path="/Logs/HistoryLogsPage" element={<PrivateRoute><HistoryLogsPage /></PrivateRoute>} />

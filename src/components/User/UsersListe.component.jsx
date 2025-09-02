@@ -59,7 +59,7 @@ function UsersListe() {
   };
 
   function addUser(){
-    navigate("/AddUser");
+    navigate("/UsersManagement/AddUser");
   };
   
 
