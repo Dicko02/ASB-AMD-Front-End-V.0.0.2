@@ -3,7 +3,6 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';// Composants 
 import Stack from '@mui/material/Stack';// Composants de mise en page
 import Loading from '../Complements/Loading.component';
 import fetchEndpoints from '../../api/endpoint/allEndpoints.api';// Importation de l'API personnalisée pour récupérer les endpoints
-import fetchNoAD from '../../api/noAdAPI/allNoAD.api';
 import { useNavigate } from 'react-router-dom';// importation du hook useNavigate pour la navigation entre les pages
 import exporteCSV from '../../utils/Export/ExportCSV';
 import {exportePDFListeEndpoints} from '../../utils/Export/ExportPDF';
@@ -24,17 +23,10 @@ function EndpointsList() {
     async function chargerEndpoints() {
       try {
         // Deux sources différentes
-        const [endpoints, noAds] = await Promise.all([
-          fetchEndpoints(), // première source
-          fetchNoAD() // deuxième source
-        ]);
+        const endpoints = await fetchEndpoints();
 
         // Normalisation en tableaux
-        const Endpoints = endpoints.data || endpoints || [];
-        const NoADs = noAds.data || noAds || [];
-
-        // Fusion
-        const response = [...Endpoints, ...NoADs];
+        const response = endpoints.data || [];
 
         setEndpoints(response); // Met à jour l’état avec les données reçues
 

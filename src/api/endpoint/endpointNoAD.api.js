@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-// Appelle l'API pour récupérer un endpoint par CN
-async function fetchEndpoint(CN) {
+// Appelle l'API pour récupérer un endpoint par Nom
+async function fetchEndpointNoAD(Nom) {
   try {
     const session = localStorage.getItem('adminSession');
     if (!session) throw new Error('Session introuvable');
@@ -9,7 +9,7 @@ async function fetchEndpoint(CN) {
     const { token } = JSON.parse(session);
     if (!token) throw new Error('Token manquant dans la session');
 
-    const response = await axios.get(`http://${import.meta.env.VITE_API_IP}:${import.meta.env.VITE_API_PORT}/api/fusion/${CN}`, {
+    const response = await axios.get(`http://${import.meta.env.VITE_API_IP}:${import.meta.env.VITE_API_PORT}/api/fusion/noAD/${Nom}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -23,4 +23,4 @@ async function fetchEndpoint(CN) {
   }
 }
 
-export default fetchEndpoint;
+export default fetchEndpointNoAD;

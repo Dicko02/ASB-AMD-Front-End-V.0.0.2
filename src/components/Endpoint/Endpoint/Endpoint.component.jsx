@@ -1,8 +1,8 @@
 import './Endpoint.component.css';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import fetchEndpoint from '../../../api/endpoint/endpoint.api';
-import fetchOneNoAD from '../../../api/noAdAPI/noAD.api';
+import fetchEndpointAD from '../../../api/endpoint/endpointAD.api';
+import fetchEndpointNoAD from '../../../api/endpoint/endpointNoAD.api';
 import Loading from '../../Complements/Loading.component';
 import exporteCSV from '../../../utils/Export/ExportCSV';
 import {exportePDFDetailEndpoint} from '../../../utils/Export/ExportPDF';
@@ -22,9 +22,9 @@ function Endpoint() {
         let endpoint;
 
         try{
-          endpoint = await fetchEndpoint(Nom); // Tentative via AD
+          endpoint = await fetchEndpointAD(Nom); // Tentative via AD
         }catch{
-          endpoint = await fetchOneNoAD(Nom); // Sinon fallback sur NoAD
+          endpoint = await fetchEndpointNoAD(Nom); // Sinon fallback sur NoAD
         };
 
         response = endpoint?.data || {};

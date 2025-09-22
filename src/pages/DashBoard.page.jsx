@@ -19,7 +19,6 @@ import PercentageConvertion from '../utils/PercentageConvertion';
 import AllCriticalyNumberPerMonth from '../utils/CriticatlyLevelNumberAndDate/AllCriticalyNumberPerMonth';
 
 // Fonctions des No-Composants
-import countTotalEndpoints from '../utils/endpointComposantCount/EndpointTotalCount';
 import countEndpointsNoAD from '../utils/endpointComposantCount/NoAD';
 import countEndpointsNoKaspersky from '../utils/endpointComposantCount/NoKaspersky';
 import countEndpointsNoGLPI from '../utils/endpointComposantCount/NoGLPI';
@@ -37,7 +36,7 @@ function DashBoardPage() {
     const critical = await countCriticalPriorityEndpoints();
 
     // Bloc statistiques No Composants
-    const NoTotal   = await countTotalEndpoints();
+    const NoTotal   = await countEndpoints();
     const NoAD     = await countEndpointsNoAD();
     const NoKaspersky  = await countEndpointsNoKaspersky();
     const NoGLPI    = await countEndpointsNoGLPI();

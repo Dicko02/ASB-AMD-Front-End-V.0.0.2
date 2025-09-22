@@ -144,11 +144,6 @@ export default function SidebarToggle() {
                 onMouseOver={(e) => (e.currentTarget.style.color = '#2563eb')}
                 onMouseOut={(e) => (e.currentTarget.style.color = '#374151')}
               >Voir les logs</a>
-              
-              <a href="/NoAD" style={{ color: '#374151', textDecoration: 'none' }}
-                onMouseOver={(e) => (e.currentTarget.style.color = '#2563eb')}
-                onMouseOut={(e) => (e.currentTarget.style.color = '#374151')}
-              >Liste des NoAD</a>
 
             </nav>
           </div>

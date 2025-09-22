@@ -6,7 +6,6 @@ import PrivateRoute from './utils/PrivateRoute';
 
 // Lazy loading des pages
 const Accueil = lazy(() => import('./pages/Accueil.page'));
-const NoAD = lazy(() => import('./pages/NoAD.page'));
 const Endpoint = lazy(() => import('./pages/Endpoint.page'));
 const DashBoard = lazy(() => import('./pages/DashBoard.page'));
 const UsersModif = lazy(() => import('./pages/User/UserModif.page'));
@@ -31,7 +30,6 @@ function App() {
 
           {/* Page d'accueil (protégée) */}
           <Route path="/Endpoints" element={<PrivateRoute><Accueil /></PrivateRoute>}/>
-          <Route path="/NoAD" element={<PrivateRoute><NoAD /></PrivateRoute>}/>
           <Route path="/Endpoints/:CN" element={<PrivateRoute><Endpoint /></PrivateRoute>} />
           <Route path="/DashBoard" element={<PrivateRoute><DashBoard /></PrivateRoute>} />
           <Route path="/UsersManagement" element={<PrivateRoute><UsersManagement /></PrivateRoute>} />

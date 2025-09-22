@@ -1,27 +1,18 @@
 import fetchEndpoints from '../../api/endpoint/allEndpoints.api';
-import fetchNoAD from '../../api/noAdAPI/allNoAD.api';
 
 // Fonction pour compter le nombre d'endpoints avec un niveau de dangerosité "high"
 async function countHighPriorityEndpoints() {
   try {
-    const [source1, source2] = await Promise.all([
-      fetchEndpoints(), // première source
-      fetchNoAD() // deuxième source
-    ]);
+    const source = await fetchEndpoints()
 
-    // Normalisation en tableaux
-    const Endpoints = source1.data || source1 || [];
-    const NoADs = source2.data || source2 || [];
-
-    // Fusion
-    const endpoints = [...Endpoints, ...NoADs];
+    const endpoints = source.data || [];
 
     let endpointsHighPriorityNumber = 0;
 
     for (const endpoint of endpoints) {
-        if(endpoint.criticalLevel === "high") {
-            endpointsHighPriorityNumber++; // On incrémente le compteur si le niveau de dangerosité est "high"
-        }
+      if(endpoint.criticalLevel === "high") {
+        endpointsHighPriorityNumber++; // On incrémente le compteur si le niveau de dangerosité est "high"
+      }
     }
 
     return endpointsHighPriorityNumber; // On retourne le nombre

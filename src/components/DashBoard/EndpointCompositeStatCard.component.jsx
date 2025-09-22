@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import Loading from '../Complements/Loading.component';
 
-import countTotalEndpoints from '../../utils/endpointComposantCount/EndpointTotalCount';
+import countTotalEndpoints from '../../utils/EndpointPriorityLevelNumber/EndpointTotalNumber';
 import countEndpointsNoAD from '../../utils/endpointComposantCount/NoAD';
 import countEndpointsNoKaspersky from '../../utils/endpointComposantCount/NoKaspersky';
 import countEndpointsNoGLPI from '../../utils/endpointComposantCount/NoGLPI';
