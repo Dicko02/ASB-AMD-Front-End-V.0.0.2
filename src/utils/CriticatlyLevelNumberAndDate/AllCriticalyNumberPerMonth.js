@@ -1,5 +1,6 @@
 import getMonth from "./DateMonth";
 import fetchEndpoints from '../../api/endpoint/allEndpoints.api';
+import fetchNoAD from '../../api/noAdAPI/allNoAD.api';
 import Mois from './MonthModel';
 
 async function AllCriticalyNumberPerMonth() {
@@ -11,8 +12,17 @@ async function AllCriticalyNumberPerMonth() {
 
     const allMonthCritalyLevels = Months.map(nom => new Mois({ nom }));
 
-    const response = await fetchEndpoints();
-    const endpoints = response.data;
+    const [source1, source2] = await Promise.all([
+      fetchEndpoints(), // première source
+      fetchNoAD() // deuxième source
+    ]);
+
+    // Normalisation en tableaux
+    const Endpoints = source1.data || source1 || [];
+    const NoADs = source2.data || source2 || [];
+
+    // Fusion
+    const endpoints = [...Endpoints, ...NoADs];
 
     for (const endpoint of endpoints) {
       // 🛡️ Vérifie que la date existe et est une string

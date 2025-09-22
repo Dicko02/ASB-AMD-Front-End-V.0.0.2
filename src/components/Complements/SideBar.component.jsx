@@ -124,20 +124,16 @@ export default function SidebarToggle() {
                 gap: '1rem',
               }}
             >
-              <a href="/Endpoints" style={{ color: '#374151', textDecoration: 'none' }}
-                onMouseOver={(e) => (e.currentTarget.style.color = '#2563eb')}
-                onMouseOut={(e) => (e.currentTarget.style.color = '#374151')}
-              >Liste des Endpoints</a>
-
-              <a href="/NoAD" style={{ color: '#374151', textDecoration: 'none' }}
-                onMouseOver={(e) => (e.currentTarget.style.color = '#2563eb')}
-                onMouseOut={(e) => (e.currentTarget.style.color = '#374151')}
-              >Liste des NoAD</a>
-
+              
               <a href="/DashBoard" style={{ color: '#374151', textDecoration: 'none' }}
                 onMouseOver={(e) => (e.currentTarget.style.color = '#2563eb')}
                 onMouseOut={(e) => (e.currentTarget.style.color = '#374151')}
               >Tableau de Bord</a>
+
+              <a href="/Endpoints" style={{ color: '#374151', textDecoration: 'none' }}
+                onMouseOver={(e) => (e.currentTarget.style.color = '#2563eb')}
+                onMouseOut={(e) => (e.currentTarget.style.color = '#374151')}
+              >Liste des Endpoints</a>
 
               <a href="/UsersManagement" style={{ color: '#374151', textDecoration: 'none', display: isVisibleSA ? 'block' : 'none' }}
                 onMouseOver={(e) => (e.currentTarget.style.color = '#2563eb')}
@@ -148,6 +144,12 @@ export default function SidebarToggle() {
                 onMouseOver={(e) => (e.currentTarget.style.color = '#2563eb')}
                 onMouseOut={(e) => (e.currentTarget.style.color = '#374151')}
               >Voir les logs</a>
+              
+              <a href="/NoAD" style={{ color: '#374151', textDecoration: 'none' }}
+                onMouseOver={(e) => (e.currentTarget.style.color = '#2563eb')}
+                onMouseOut={(e) => (e.currentTarget.style.color = '#374151')}
+              >Liste des NoAD</a>
+
             </nav>
           </div>
 

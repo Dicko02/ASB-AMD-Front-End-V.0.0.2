@@ -3,6 +3,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';// Composants 
 import Stack from '@mui/material/Stack';// Composants de mise en page
 import Loading from '../Complements/Loading.component';
 import fetchEndpoints from '../../api/endpoint/allEndpoints.api';// Importation de l'API personnalisée pour récupérer les endpoints
+import fetchNoAD from '../../api/noAdAPI/allNoAD.api';
 import { useNavigate } from 'react-router-dom';// importation du hook useNavigate pour la navigation entre les pages
 import exporteCSV from '../../utils/Export/ExportCSV';
 import {exportePDFListeEndpoints} from '../../utils/Export/ExportPDF';
@@ -22,8 +23,28 @@ function EndpointsList() {
   React.useEffect(() => {
     async function chargerEndpoints() {
       try {
-        const response = await fetchEndpoints();
-        setEndpoints(response.data); // Met à jour l’état avec les données reçues
+        // Deux sources différentes
+        const [endpoints, noAds] = await Promise.all([
+          fetchEndpoints(), // première source
+          fetchNoAD() // deuxième source
+        ]);
+
+        // Normalisation en tableaux
+        const Endpoints = endpoints.data || endpoints || [];
+        const NoADs = noAds.data || noAds || [];
+
+        // Fusion
+        const response = [...Endpoints, ...NoADs];
+
+        setEndpoints(response); // Met à jour l’état avec les données reçues
+
+        const hasMissingCN = response.some(row => !row.CN);
+        setColumnVisibilityModel(prev => ({
+          ...prev,
+          CN: !hasMissingCN,   // visible uniquement si tous les CN existent
+          Nom: hasMissingCN,   // visible uniquement si certains CN manquent
+        }));
+
       } catch (error) {
         console.error("Erreur lors du chargement des endpoints : ", error);
       }finally {
@@ -36,13 +57,36 @@ function EndpointsList() {
   
   []/* 👈 Dépendances vides pour charger une seule fois */ );
 
+  // Modèle de visibilité des colonnes pour contrôler quelles colonnes sont affichées
+  const [columnVisibilityModel, setColumnVisibilityModel] = React.useState({
+    CN: true,
+    Nom: false, // cachée par défaut
+    Utilisateur: true,
+    Lieu: true,
+    dangerousityNumber: true,
+    criticalLevel: true,
+    description: true,
+    updatedAt: true,
+    conformity: false,
+  });
+
   // Définition des colonnes à afficher dans le tableau
   const columns = [
     {
-        field: 'CN',
-        headerName: 'Nom de l\'endpoints',
-        width: 250,
-        cellClassName: 'cell-center',
+      field: 'CN',
+      headerName: "Nom de l'endpoints",
+      width: 250,
+      cellClassName: 'cell-center',
+      //valueGetter: (params) => params?.row?.CN || "Inconnu",
+    },
+
+    {
+      field: 'Nom',
+      headerName: "Nom de l'endpoints",
+      width: 250,
+      cellClassName: 'cell-center',
+      //valueGetter: (params) => params?.row?.Nom || "Inconnu",
+      hide: true, // invisible par défaut
     },
 
     {
@@ -156,18 +200,6 @@ function EndpointsList() {
 
   ];
 
-  // Modèle de visibilité des colonnes pour contrôler quelles colonnes sont affichées
-  const [columnVisibilityModel, setColumnVisibilityModel] = React.useState({
-    CN: true,
-    Utilisateur: true,
-    Lieu: true,
-    dangerousityNumber: true,
-    criticalLevel: true,
-    description: true,
-    updatedAt: true,
-    conformity: false,
-  });
-
   if (loading){
     return <Loading text="chargement de la liste des endpoints..." />;
   }
@@ -182,7 +214,7 @@ function EndpointsList() {
 
 
   const viewDescription = (row) => {
-    navigate(`/Endpoints/${row.CN}`);// Redirection vers /api/CN (par exemple /api/LP-KAMARA)
+    navigate(`/Endpoints/${row.CN ?? row.Nom}`);// Redirection vers /api/CN (par exemple /api/LP-KAMARA)
   };
 
   const adminSessionStr = localStorage.getItem('adminSession'); // chaîne JSON
@@ -280,7 +312,7 @@ function EndpointsList() {
             }
 
             components={{ Toolbar: GridToolbar }} // Outils supplémentaires (filtre, export...)
-            getRowId={(row) => row.CN}
+            getRowId={(row, index) => row.CN ?? row.Nom ?? row._id ?? `row-${index}`}
             pageSizeOptions={[5, 10, 25, 100]}
             initialState={{
               pagination: { paginationModel: { pageSize: 10, page: 0 } },

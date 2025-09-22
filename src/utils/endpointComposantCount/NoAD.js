@@ -1,4 +1,4 @@
-import fetchEndpointsNoAD from '../../api/noAD.api';
+import fetchEndpointsNoAD from '../../api/noAdAPI/allNoAD.api';
 
 // Fonction pour compter le nombre d'endpoints n'etant pas dans AD
 async function countEndpointsNoAD() {

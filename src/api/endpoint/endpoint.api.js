@@ -17,7 +17,7 @@ async function fetchEndpoint(CN) {
 
     return response;
   } catch (error) {
-    const message = error.response?.data?.message || 'Échec de la récupération du endpoint';
+    const message = error.response?.data?.message || 'Échec de la récupération de l\'endpoint';
     console.error('Erreur fetchEndpoint:', message);
     throw new Error(message);
   }

@@ -1,4 +1,4 @@
-import countEndpoints from "./EndpointPriorityLevelNumber/EndpointTotalNumber";
+import countEndpoints from "./endpointComposantCount/EndpointTotalCount";
 
 async function PercentageConvertion(criticalLevelTotalNumber) {
     const endpointsTotalNumber = await countEndpoints();

@@ -1,5 +1,5 @@
 import fetchEndpoints from '../../api/endpoint/allEndpoints.api';
-import fetchEndpointsNoAD from '../../api/noAD.api';
+import fetchEndpointsNoAD from '../../api/noAdAPI/allNoAD.api';
 import countEndpoints from './EndpointTotalCount';
 
 // Fonction pour compter le nombre d'endpoints n'ayant pas Kaspersky

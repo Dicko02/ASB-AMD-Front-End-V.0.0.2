@@ -2,13 +2,14 @@ import './Endpoint.component.css';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import fetchEndpoint from '../../../api/endpoint/endpoint.api';
+import fetchOneNoAD from '../../../api/noAdAPI/noAD.api';
 import Loading from '../../Complements/Loading.component';
 import exporteCSV from '../../../utils/Export/ExportCSV';
 import {exportePDFDetailEndpoint} from '../../../utils/Export/ExportPDF';
 import critiquesDurablesEndpoint from '../../../utils/critiquesDurablesEndpoint'
 
 function Endpoint() {
-  const { CN } = useParams();
+  const { Nom } = useParams();
   const [endpoint, setEndpoint] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -17,8 +18,19 @@ function Endpoint() {
   useEffect(() => {
     async function loadData() {
       try {
-        const response = await fetchEndpoint(CN);
-        setEndpoint(response.data);
+        let response;
+        let endpoint;
+
+        try{
+          endpoint = await fetchEndpoint(Nom); // Tentative via AD
+        }catch{
+          endpoint = await fetchOneNoAD(Nom); // Sinon fallback sur NoAD
+        };
+
+        response = endpoint?.data || {};
+
+        setEndpoint(response); // un seul objet
+
       } catch (err) {
         setError('Erreur lors du chargement de l\'endpoint.');
         console.error(err);
@@ -27,16 +39,19 @@ function Endpoint() {
       }
     }
 
-    if (CN) {
+    if (Nom) {
       loadData();
     }
-  }, [CN]);
+  }, [Nom]);
 
   useEffect(() => {
     async function fetchCritiques() {
       try {
         if (endpoint?.CN) {
           const data = await critiquesDurablesEndpoint(endpoint.CN);
+          setCritiquesDurables(data);
+        }else if (endpoint?.Nom) {
+          const data = await critiquesDurablesEndpoint(endpoint.Nom);
           setCritiquesDurables(data);
         }
       } catch (err) {
@@ -152,7 +167,7 @@ function Endpoint() {
         }}
       >
         <button
-          onClick={() => exporteCSV(endpoint, `endpoint-${endpoint.CN || 'unique'}`)}
+          onClick={() => exporteCSV(endpoint, endpoint?.CN ? `endpoint-${endpoint.CN || 'unique'}.pdf` : `endpoint-${endpoint.Nom || 'unique'}.pdf`)}
           style={{
             backgroundColor: '#f3f4f6',
             border: '1px solid #ccc',
@@ -170,7 +185,7 @@ function Endpoint() {
         </button>
 
         <button
-          onClick={() => exportePDFDetailEndpoint(endpoint._id, `endpoint-${endpoint.CN || 'unique'}.pdf`)}
+          onClick={() => exportePDFDetailEndpoint(endpoint._id, endpoint?.CN ? `endpoint-${endpoint.CN || 'unique'}.pdf` : `endpoint-${endpoint.Nom || 'unique'}.pdf`)}
           style={{
             backgroundColor: '#f3f4f6',
             border: '1px solid #ccc',
@@ -199,7 +214,7 @@ function Endpoint() {
               borderColor: 'black'
             }}
           >
-            {endpoint.CN} - {Conforme()}
+            {endpoint.CN ?? endpoint.Nom} - {Conforme()}
           </h1>
 
           {/* Détail de l'endpoint */}

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import Loading from '../Complements/Loading.component';
 
-import countEndpoints from '../../utils/EndpointPriorityLevelNumber/EndpointTotalNumber';
+import countEndpoints from '../../utils/endpointComposantCount/EndpointTotalCount';
 import countLowPriorityEndpoints from '../../utils/EndpointPriorityLevelNumber/EndpointLowPriorityNumber';
 import countMediumPriorityEndpoints from '../../utils/EndpointPriorityLevelNumber/EndpointMediumPriorityNumber';
 import countHighPriorityEndpoints from '../../utils/EndpointPriorityLevelNumber/EndpointHighPriorityNumber';

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Loading from '../Complements/Loading.component';
-import fetchNoAD from '../../api/noAD.api'; // API pour récupérer les endpoints noAD
+import fetchNoAD from '../../api/noAdAPI/allNoAD.api'; // API pour récupérer les endpoints noAD
 import exporteCSV from '../../utils/Export/ExportCSV';
 import { exportePDFNoAD } from '../../utils/Export/ExportPDF';
 
