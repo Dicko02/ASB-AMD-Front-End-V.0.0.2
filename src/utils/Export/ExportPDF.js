@@ -9,18 +9,18 @@ function exportePDFListeEndpoints(data, baseName = 'liste-endpoints') {
   // Colonnes visibles dans le tableau React (filtrées)
   const visibleColumns = [
     'CN',
+    'typeMachine',
     'Utilisateur',
     'Lieu',
     'dangerousityNumber',
     'criticalLevel',
-    'updatedAt',
   ];
 
   // Préparer données pour pdf, en conservant l'ordre des colonnes visibles
   const sanitized = rows.map(row => {
     const { _id, __v, ...rest } = row;
     // Fixe une clé visible CN
-    const rowKey = row?.CN ?? row?._id ?? '';
+    const rowKey = row?.CN ?? row?.Nom ?? row?._id ?? '';
     return { CN: rowKey, ...rest };
   });
 

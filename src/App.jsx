@@ -30,7 +30,7 @@ function App() {
 
           {/* Page d'accueil (protégée) */}
           <Route path="/Endpoints" element={<PrivateRoute><Accueil /></PrivateRoute>}/>
-          <Route path="/Endpoints/:CN" element={<PrivateRoute><Endpoint /></PrivateRoute>} />
+          <Route path="/Endpoints/:Nom" element={<PrivateRoute><Endpoint /></PrivateRoute>} />
           <Route path="/DashBoard" element={<PrivateRoute><DashBoard /></PrivateRoute>} />
           <Route path="/UsersManagement" element={<PrivateRoute><UsersManagement /></PrivateRoute>} />
           <Route path="/UsersManagement/:id" element={<PrivateRoute><UsersModif /></PrivateRoute>} />

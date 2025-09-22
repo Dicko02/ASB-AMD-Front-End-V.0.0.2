@@ -53,12 +53,13 @@ function EndpointsList() {
   const [columnVisibilityModel, setColumnVisibilityModel] = React.useState({
     CN: true,
     Nom: false, // cachée par défaut
+    Type: true,
     Utilisateur: true,
     Lieu: true,
     dangerousityNumber: true,
     criticalLevel: true,
     description: true,
-    updatedAt: true,
+    updatedAt: false,
     conformity: false,
   });
 
@@ -79,27 +80,34 @@ function EndpointsList() {
       cellClassName: 'cell-center',
       //valueGetter: (params) => params?.row?.Nom || "Inconnu",
       hide: true, // invisible par défaut
+    },//typeMachine
+
+    {
+      field: 'typeMachine',
+      headerName: 'Type de l\'endpoint',
+      width: 200,
+      cellClassName: 'cell-center',
     },
 
     {
-        field: 'Utilisateur',
-        headerName: 'Nom de l\'utilisateur',
-        width: 200,
-        cellClassName: 'cell-center',
+      field: 'Utilisateur',
+      headerName: 'Nom de l\'utilisateur',
+      width: 200,
+      cellClassName: 'cell-center',
     },
 
     {
-        field: 'Lieu',
-        headerName: 'Lieu',
-        width: 200,
-        cellClassName: 'cell-center',
+      field: 'Lieu',
+      headerName: 'Lieu',
+      width: 200,
+      cellClassName: 'cell-center',
     },
 
     {
-        field: 'dangerousityNumber',
-        headerName: 'Niveau de criticité',
-        width: 180,
-        cellClassName: 'cell-center',
+      field: 'dangerousityNumber',
+      headerName: 'Niveau de criticité',
+      width: 180,
+      cellClassName: 'cell-center',
     },
 
     {
@@ -205,8 +213,8 @@ function EndpointsList() {
   });
 
 
-  const viewDescription = (row) => {
-    navigate(`/Endpoints/${row.CN ?? row.Nom}`);// Redirection vers /api/CN (par exemple /api/LP-KAMARA)
+  function viewDescription (row) {
+    navigate(`/Endpoints/${row.CN ?? row.Nom}`);// Redirection vers /api/CN ou /api/Nom (par exemple /api/LP-KAMARA)
   };
 
   const adminSessionStr = localStorage.getItem('adminSession'); // chaîne JSON
