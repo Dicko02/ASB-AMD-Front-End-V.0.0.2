@@ -5,6 +5,7 @@ import StatCard from '../components/DashBoard/StatCard.component';
 import EndpointCompositeStatCard from '../components/DashBoard/EndpointCompositeStatCard.component'
 import PieArcLabel from '../components/DashBoard/PieArc.component';
 import BarChartEndpoints from '../components/DashBoard/Bars.component';
+import TopCriticalEndpointsCard from '../components/DashBoard/TopCritical.component';
 
 // fonctions d’export
 import { exportDashboardCSV, exportDashboardPDF } from '../utils/Export/exportDashboardInfo';
@@ -182,6 +183,7 @@ function DashBoardPage() {
         >
           <StatCard />
           <EndpointCompositeStatCard />
+          <TopCriticalEndpointsCard />
         </div>
 
         {/* 📊 Graphiques */}
