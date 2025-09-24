@@ -5,7 +5,7 @@ import Loading from './components/Complements/Loading.component';
 import PrivateRoute from './utils/PrivateRoute';
 
 // Lazy loading des pages
-const Accueil = lazy(() => import('./pages/Accueil.page'));
+const ListeEndpoints = lazy(() => import('./pages/ListeEndpoints.page'));
 const Endpoint = lazy(() => import('./pages/Endpoint.page'));
 const DashBoard = lazy(() => import('./pages/DashBoard.page'));
 const UsersModif = lazy(() => import('./pages/User/UserModif.page'));
@@ -29,7 +29,7 @@ function App() {
           <Route path="/" element={<Connexion />} />
 
           {/* Page d'accueil (protégée) */}
-          <Route path="/Endpoints" element={<PrivateRoute><Accueil /></PrivateRoute>}/>
+          <Route path="/Endpoints" element={<PrivateRoute><ListeEndpoints /></PrivateRoute>}/>
           <Route path="/Endpoints/:Nom" element={<PrivateRoute><Endpoint /></PrivateRoute>} />
           <Route path="/DashBoard" element={<PrivateRoute><DashBoard /></PrivateRoute>} />
           <Route path="/UsersManagement" element={<PrivateRoute><UsersManagement /></PrivateRoute>} />

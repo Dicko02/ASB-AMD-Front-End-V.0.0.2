@@ -1,20 +1,20 @@
 import getMonth from "./DateMonth";
-import fetchEndpoints from '../../api/endpoint/allEndpoints.api';
 import Mois from './MonthModel';
 
-async function AllCriticalyNumberPerMonth() {
+async function AllCriticalyNumberPerMonth(endpoints) {
   try {
+    
+    // sécurité
+    if (!Array.isArray(endpoints)) {
+      return [];
+    }
+
     const Months = [
       "janvier", "fevrier", "mars", "avril", "mai", "juin",
       "juillet", "aout", "septembre", "octobre", "novembre", "decembre"
     ];
 
     const allMonthCritalyLevels = Months.map(nom => new Mois({ nom }));
-
-    const source = await fetchEndpoints();
-
-    // Normalisation en tableaux
-    const endpoints = source.data || [];
 
     for (const endpoint of endpoints) {
       // 🛡️ Vérifie que la date existe et est une string

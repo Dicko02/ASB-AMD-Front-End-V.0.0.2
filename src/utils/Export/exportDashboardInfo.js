@@ -5,10 +5,10 @@ import autoTable from 'jspdf-autotable'; // correction ici : on importe le plugi
 
 //Exportation des données du tableau de bord en CSV composé de 3 sections : Statistiques globales, Répartition en %, Évolution mensuelle
 function exportDashboardCSV(
-  { stats, NoComposantStats, percentages, monthly },
+  { stats, NoComposantStats, percentages, monthly, topEndpoints },
   baseName = 'dashboard-info',
 ) {
-  if (!stats || !percentages || !monthly) return;
+  if (!stats || !percentages || !monthly || !topEndpoints) return;
 
   // Section "Statistiques(pivot → metric,value)"
   const statsCsv = Papa.unparse(
@@ -34,6 +34,17 @@ function exportDashboardCSV(
     delimiter: ';',
   });
 
+  // Section Top 5 endpoints critiques
+  const topCsv = Papa.unparse(
+    (topEndpoints || []).map(ep => ({
+      endpoint: ep.CN || ep.Nom,
+      criticalLevel: ep.criticalLevel,
+      dangerousityNumber: ep.dangerousityNumber,
+      jours: ep.jours,
+    })),
+    { header: true, delimiter: ';' },
+  );
+
   // Fusion des blocs avec des séparateurs lisibles
   const fullCsv =
     '#STATISTIQUES\n' +
@@ -43,10 +54,13 @@ function exportDashboardCSV(
     '\n\n#REPARTITION(%)\n' +
     pctCsv +
     '\n\n#EVOLUTION_MENSUELLE\n' +
-    monthlyCsv;
+    monthlyCsv +
+    '\n\n#TOP5_ENDPOINTS_CRITIQUES\n' +
+    topCsv;
 
   saveAs(
-    new Blob([fullCsv], { type: 'text/csv;charset=utf-8' }),
+    new Blob([fullCsv],
+    { type: 'text/csv;charset=utf-8' }),
     `${baseName}.csv`,
   );
 }
@@ -55,10 +69,10 @@ function exportDashboardCSV(
 
 //Exportation des mêmes données en PDF
 function exportDashboardPDF(
-  { stats, NoComposantStats, percentages, monthly },
+  { stats, NoComposantStats, percentages, monthly, topEndpoints },
   baseName = 'dashboard-info',
 ) {
-  if (!stats || !NoComposantStats || !percentages || !monthly) return;
+  if (!stats || !NoComposantStats || !percentages || !monthly || !topEndpoints) return;
 
   // Préparation des tables
   const statsBody = Object.entries(stats).map(([k, v]) => [k, v]);
@@ -66,6 +80,15 @@ function exportDashboardPDF(
   const pctBody   = Object.entries(percentages).map(([k, v]) => [k, v + '%']);
   const monthlyCols = Object.keys(monthly[0] ?? {});
   const monthlyBody = monthly.map((row) => monthlyCols.map((c) => row[c]));
+
+  // Table Top 5
+  const topCols = ['Endpoint', 'Critical Level', 'Dangerousity', 'Jours'];
+  const topBody = (topEndpoints || []).map(ep => [
+    ep.CN || ep.Nom,
+    ep.criticalLevel,
+    ep.dangerousityNumber,
+    ep.jours,
+  ]);
 
   // Création du PDF
   const doc = new jsPDF({ orientation: 'portrait', unit: 'pt', format: 'a4' });
@@ -84,7 +107,7 @@ function exportDashboardPDF(
 
   //Table 1.2 : Statistiques globales(No-Composites)
   autoTable(doc, {
-    startY: doc.lastAutoTable.finalY + 30,
+    startY: doc.lastAutoTable.finalY + 40,
     head  : [['Métrique', 'Valeur']],
     body  : NoComposantStatsBody,
     theme : 'striped',
@@ -94,7 +117,7 @@ function exportDashboardPDF(
 
   //Table 2 : Répartition en %
   autoTable(doc, {
-    startY: doc.lastAutoTable.finalY + 30,
+    startY: doc.lastAutoTable.finalY + 40,
     head  : [['Criticité', 'Pourcentage']],
     body  : pctBody,
     theme : 'striped',
@@ -104,12 +127,21 @@ function exportDashboardPDF(
 
   // Table 3 : Évolution mensuelle
   autoTable(doc, {
-    startY: doc.lastAutoTable.finalY + 30,
+    startY: doc.lastAutoTable.finalY + 40,
     head  : [monthlyCols],
     body  : monthlyBody,
     theme : 'striped',
     styles: { fontSize: 8 },
     margin: { left: 40, right: 40 },
+  });
+
+  autoTable(doc, {
+    startY: doc.lastAutoTable.finalY + 40,
+    head: [topCols],
+    body: topBody,
+    theme: 'striped',
+    styles: { fontSize: 9 },
+    margin: { left: 40, right: 40 }
   });
 
   doc.save(`${baseName}.pdf`);

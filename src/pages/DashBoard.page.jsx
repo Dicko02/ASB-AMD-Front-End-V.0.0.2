@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import SidebarToggle from '../components/Complements/SideBar.component';
 import Loading from '../components/Complements/Loading.component';
+
 import StatCard from '../components/DashBoard/StatCard.component';
 import EndpointCompositeStatCard from '../components/DashBoard/EndpointCompositeStatCard.component'
 import PieArcLabel from '../components/DashBoard/PieArc.component';
@@ -11,47 +12,114 @@ import TopCriticalEndpointsCard from '../components/DashBoard/TopCritical.compon
 import { exportDashboardCSV, exportDashboardPDF } from '../utils/Export/exportDashboardInfo';
 
 // Fonctions de comptage
-import countEndpoints from '../utils/EndpointPriorityLevelNumber/EndpointTotalNumber';
-import countLowPriorityEndpoints from '../utils/EndpointPriorityLevelNumber/EndpointLowPriorityNumber';
-import countMediumPriorityEndpoints from '../utils/EndpointPriorityLevelNumber/EndpointMediumPriorityNumber';
-import countHighPriorityEndpoints from '../utils/EndpointPriorityLevelNumber/EndpointHighPriorityNumber';
-import countCriticalPriorityEndpoints from '../utils/EndpointPriorityLevelNumber/EndpointCriticalyPriorityNumber';
+import {
+  countEndpoints,
+  countLowPriorityEndpoints,
+  countMediumPriorityEndpoints,
+  countHighPriorityEndpoints,
+  countCriticalPriorityEndpoints
+} from '../utils/EndpointPriorityAndTotal';
+
+// Fonction de conversion en pourcentage et de determination criticite par mois
 import PercentageConvertion from '../utils/PercentageConvertion';
 import AllCriticalyNumberPerMonth from '../utils/CriticatlyLevelNumberAndDate/AllCriticalyNumberPerMonth';
 
 // Fonctions des No-Composants
-import countEndpointsNoAD from '../utils/endpointComposantCount/NoAD';
-import countEndpointsNoKaspersky from '../utils/endpointComposantCount/NoKaspersky';
-import countEndpointsNoGLPI from '../utils/endpointComposantCount/NoGLPI';
+import { 
+  countEndpointsNoAD, 
+  countEndpointsNoGLPI, 
+  countEndpointsNoKaspersky 
+} from '../utils/NoSource';
+
+// API fetchers
+import fetchAllEndpoints from '../api/endpoint/allEndpoints.api';
+import fetchCritiquesDurables from '../api/logsAPI/critiquesDurables.api';
+
+// Fonction pour obtenir les top N endpoints critiques
+import getTopCriticalEndpoints from '../utils/TopCriticalEndpoints';
 
 function DashBoardPage() {
   const [loading, setLoading] = useState(true);
 
-  const assembleDashboardData = async () => {
+  // Données brutes
+  const [allEndpointsData, setAllEndpointsData] = useState([]);
+  const [critiquesDurablesData, setCritiquesDurablesData] = useState([]);
+
+  // Statistiques brutes
+  const [totalEndpoints, setTotalEndpoints] = useState(0);
+  const [lowEndpoints, setLowEndpoints] = useState(0);
+  const [mediumEndpoints, setMediumEndpoints] = useState(0);
+  const [highEndpoints, setHighEndpoints] = useState(0);
+  const [criticalEndpoints, setCriticalEndpoints] = useState(0);
+
+  // Statistiques No-Composants
+  const [NoADEndpoints, setNoADEndpoints] = useState(0);
+  const [NoKasperskyEndpoints, setNoKasperskyEndpoints] = useState(0);
+  const [NoGLPIEndpoints, setNoGLPIEndpoints] = useState(0);
+
+  const [AllCriticalyNumberPerMonthData, setAllCriticalyNumberPerMonthData] = useState([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const allEndpoints = await fetchAllEndpoints();
+        const critiquesDurables = await fetchCritiquesDurables();
+
+        // Stocke les données brutes
+        setAllEndpointsData(allEndpoints.data);
+        setCritiquesDurablesData(critiquesDurables.data);
+
+        // Statistiques brutes
+        setTotalEndpoints(await countEndpoints(allEndpoints.data));
+        setLowEndpoints(await countLowPriorityEndpoints(allEndpoints.data));
+        setMediumEndpoints(await countMediumPriorityEndpoints(allEndpoints.data));
+        setHighEndpoints(await countHighPriorityEndpoints(allEndpoints.data));
+        setCriticalEndpoints(await countCriticalPriorityEndpoints(allEndpoints.data));
+
+        // Statistiques No-Composants
+        setNoADEndpoints(await countEndpointsNoAD(allEndpoints.data));
+        setNoKasperskyEndpoints(await countEndpointsNoKaspersky(allEndpoints.data));
+        setNoGLPIEndpoints(await countEndpointsNoGLPI(allEndpoints.data));
+
+        // Données mensuelles
+        setAllCriticalyNumberPerMonthData(await AllCriticalyNumberPerMonth(allEndpoints.data));
+
+      } catch (err) {
+        console.error("Erreur lors du fetch des endpoints ou critiques durables :", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchData();
+  }, []);
+
+
+  async function assembleDashboardData () {
 
     // Bloc statistiques brutes
-    const total   = await countEndpoints();
-    const low     = await countLowPriorityEndpoints();
-    const medium  = await countMediumPriorityEndpoints();
-    const high    = await countHighPriorityEndpoints();
-    const critical = await countCriticalPriorityEndpoints();
+    const total = totalEndpoints;
+    const low = lowEndpoints;
+    const medium = mediumEndpoints;
+    const high = highEndpoints;
+    const critical = criticalEndpoints;
 
     // Bloc statistiques No Composants
-    const NoTotal   = await countEndpoints();
-    const NoAD     = await countEndpointsNoAD();
-    const NoKaspersky  = await countEndpointsNoKaspersky();
-    const NoGLPI    = await countEndpointsNoGLPI();
+    const NoTotal = totalEndpoints;
+    const NoAD = NoADEndpoints;
+    const NoKaspersky = NoKasperskyEndpoints;
+    const NoGLPI = NoGLPIEndpoints;
 
     // Bloc pourcentages
     const percentages = {
-      low: await PercentageConvertion(low),
-      medium: await PercentageConvertion(medium),
-      high: await PercentageConvertion(high),
-      critical: await PercentageConvertion(critical),
+      low: await PercentageConvertion(low, total),
+      medium: await PercentageConvertion(medium, total),
+      high: await PercentageConvertion(high, total),
+      critical: await PercentageConvertion(critical, total),
     };
 
     // Bloc mensuel
-    const monthlyRaw = await AllCriticalyNumberPerMonth();
+    const monthlyRaw = await AllCriticalyNumberPerMonth(allEndpointsData);
     const monthly = monthlyRaw.map(item => ({
       mois: item.nom,
       faibles: item.low,
@@ -60,13 +128,18 @@ function DashBoardPage() {
       critiques: item.critical,
     }));
 
+    // Bloc Top 5 endpoints critiques
+    const topEndpoints = getTopCriticalEndpoints(allEndpointsData, critiquesDurablesData, 5);
+
     return {
       stats: { total, low, medium, high, critical },
       NoComposantStats: { NoTotal, NoAD, NoKaspersky, NoGLPI },
       percentages,
       monthly,
+      topEndpoints
     };
   };
+
 
   const handleExportCSV = async () => {
     const data = await assembleDashboardData();
@@ -77,12 +150,7 @@ function DashBoardPage() {
     const data = await assembleDashboardData();
     exportDashboardPDF(data);
   };
-
-
-  useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 2000);
-    return () => clearTimeout(timer);
-  }, []);
+  
 
   if (loading) {
     return (
@@ -181,9 +249,25 @@ function DashBoardPage() {
             marginBottom: '2rem',
           }}
         >
-          <StatCard />
-          <EndpointCompositeStatCard />
-          <TopCriticalEndpointsCard />
+          <StatCard 
+            totalEndpoints={totalEndpoints || 0}
+            lowEndpoints={lowEndpoints || 0}
+            mediumEndpoints={mediumEndpoints || 0}
+            highEndpoints={highEndpoints || 0}
+            criticalEndpoints={criticalEndpoints || 0}
+          />
+
+          <EndpointCompositeStatCard
+            totalEndpoints={totalEndpoints || 0}
+            NoADEndpoints={NoADEndpoints || 0}
+            NoKasperskyEndpoints={NoKasperskyEndpoints || 0}
+            NoGLPIEndpoints={NoGLPIEndpoints || 0}
+          />
+
+          <TopCriticalEndpointsCard
+            allEndpoints={allEndpointsData || []}
+            critiquesDurables={critiquesDurablesData || []}
+          />
         </div>
 
         {/* 📊 Graphiques */}
@@ -197,12 +281,20 @@ function DashBoardPage() {
           <h2 style={{ fontSize: '1.25rem', fontWeight: 600, color: '#374151' }}>
             Répartition actuelle
           </h2>
-          <PieArcLabel />
+          <PieArcLabel
+            totalEndpoints={totalEndpoints || 0}
+            lowEndpoints={lowEndpoints || 0}
+            mediumEndpoints={mediumEndpoints || 0}
+            highEndpoints={highEndpoints || 0}
+            criticalEndpoints={criticalEndpoints || 0}
+          />
 
           <h2 style={{ fontSize: '1.25rem', fontWeight: 600, color: '#374151' }}>
             Évolution mensuelle
           </h2>
-          <BarChartEndpoints />
+          <BarChartEndpoints
+            AllCriticalyNumberPerMonth={AllCriticalyNumberPerMonthData || []}
+          />
         </div>
       </main>
     </div>

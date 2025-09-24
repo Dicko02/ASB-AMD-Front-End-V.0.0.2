@@ -1,12 +1,7 @@
 import { useEffect, useState } from 'react';
 import Loading from '../Complements/Loading.component';
 
-import countTotalEndpoints from '../../utils/EndpointPriorityLevelNumber/EndpointTotalNumber';
-import countEndpointsNoAD from '../../utils/endpointComposantCount/NoAD';
-import countEndpointsNoKaspersky from '../../utils/endpointComposantCount/NoKaspersky';
-import countEndpointsNoGLPI from '../../utils/endpointComposantCount/NoGLPI';
-
-function EndpointCompositeStatCard() {
+function EndpointCompositeStatCard({ totalEndpoints, NoADEndpoints, NoKasperskyEndpoints, NoGLPIEndpoints }) {
   const [total, setTotal] = useState(0);
   const [NoAD, setNoAD] = useState(0);
   const [NoKaspersky, setNoKaspersky] = useState(0);
@@ -16,10 +11,10 @@ function EndpointCompositeStatCard() {
   useEffect(() => {
     async function fetchStats() {
       try {
-        setTotal(await countTotalEndpoints());
-        setNoAD(await countEndpointsNoAD());
-        setNoKaspersky(await countEndpointsNoKaspersky());
-        setNoGLPI(await countEndpointsNoGLPI());
+        setTotal(totalEndpoints);
+        setNoAD(NoADEndpoints);
+        setNoKaspersky(NoKasperskyEndpoints);
+        setNoGLPI(NoGLPIEndpoints);
       } catch (err) {
         console.error('Erreur lors du chargement des stats :', err);
       } finally {
@@ -28,7 +23,7 @@ function EndpointCompositeStatCard() {
     }
 
     fetchStats();
-  }, []);
+  }, [totalEndpoints, NoADEndpoints, NoKasperskyEndpoints, NoGLPIEndpoints]);
 
   if (loading){
     return <Loading text="Chargement des données statistiques liées aux composants..." />;
@@ -51,7 +46,7 @@ function EndpointCompositeStatCard() {
       }}
     >
       <div style={{ textAlign: 'center', fontWeight: 'bold', fontSize: '16px', marginBottom: '8px' }}>
-        Total-G : {total}
+        Total : {total}
       </div>
 
       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>

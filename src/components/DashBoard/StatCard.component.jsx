@@ -1,28 +1,27 @@
 import { useEffect, useState } from 'react';
 import Loading from '../Complements/Loading.component';
 
-import countEndpoints from '../../utils/EndpointPriorityLevelNumber/EndpointTotalNumber';
-import countLowPriorityEndpoints from '../../utils/EndpointPriorityLevelNumber/EndpointLowPriorityNumber';
-import countMediumPriorityEndpoints from '../../utils/EndpointPriorityLevelNumber/EndpointMediumPriorityNumber';
-import countHighPriorityEndpoints from '../../utils/EndpointPriorityLevelNumber/EndpointHighPriorityNumber';
-import countCriticalPriorityEndpoints from '../../utils/EndpointPriorityLevelNumber/EndpointCriticalyPriorityNumber';
+function StatCard({totalEndpoints, lowEndpoints, mediumEndpoints, highEndpoints, criticalEndpoints}) {
+  const [loading, setLoading] = useState(true);
 
-function StatCard() {
+  // États pour chaque statistique
   const [total, setTotal] = useState(0);
   const [low, setLow] = useState(0);
   const [medium, setMedium] = useState(0);
   const [high, setHigh] = useState(0);
   const [critical, setCritical] = useState(0);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchStats() {
       try {
-        setTotal(await countEndpoints());
-        setLow(await countLowPriorityEndpoints());
-        setMedium(await countMediumPriorityEndpoints());
-        setHigh(await countHighPriorityEndpoints());
-        setCritical(await countCriticalPriorityEndpoints());
+        
+        // On utilise les props passées pour définir les états
+        setTotal(totalEndpoints);
+        setLow(lowEndpoints);
+        setMedium(mediumEndpoints);
+        setHigh(highEndpoints);
+        setCritical(criticalEndpoints);
+
       } catch (err) {
         console.error('Erreur lors du chargement des stats :', err);
       } finally {
@@ -31,7 +30,7 @@ function StatCard() {
     }
 
     fetchStats();
-  }, []);
+  }, [totalEndpoints, lowEndpoints, mediumEndpoints, highEndpoints, criticalEndpoints]);
 
   if (loading){
     return <Loading text="Chargement des données statistiques liées aux endpoints..." />;
@@ -54,26 +53,26 @@ function StatCard() {
       }}
     >
       <div style={{ textAlign: 'center', fontWeight: 'bold', fontSize: '16px', marginBottom: '8px' }}>
-        Total-N : {total}
+        Total : {total}
       </div>
 
       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
-        <span style={{ fontSize: '14px', color: '#6b7280' }}>Low :</span>
+        <span style={{ fontSize: '14px', color: '#6b7280' }}>Faible :</span>
         <span style={{ color: 'green', fontWeight: '600' }}>{low}</span>
       </div>
 
       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
-        <span style={{ fontSize: '14px', color: '#6b7280' }}>Medium :</span>
+        <span style={{ fontSize: '14px', color: '#6b7280' }}>Modéré :</span>
         <span style={{ color: 'orange', fontWeight: '600' }}>{medium}</span>
       </div>
 
       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
-        <span style={{ fontSize: '14px', color: '#6b7280' }}>High :</span>
+        <span style={{ fontSize: '14px', color: '#6b7280' }}>Haut :</span>
         <span style={{ color: 'orangered', fontWeight: '600' }}>{high}</span>
       </div>
 
       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0' }}>
-        <span style={{ fontSize: '14px', color: '#6b7280' }}>Critical :</span>
+        <span style={{ fontSize: '14px', color: '#6b7280' }}>Critique :</span>
         <span style={{ color: 'red', fontWeight: '600' }}>{critical}</span>
       </div>
     </div>

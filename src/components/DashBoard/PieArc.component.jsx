@@ -5,35 +5,38 @@ import { PieChart, pieArcLabelClasses } from '@mui/x-charts/PieChart';
 import PercentageConvertion from '../../utils/PercentageConvertion';
 import Loading from '../Complements/Loading.component';
 
-// Import des fonctions pour compter les endpoints par niveau de dangerosité
-import countLowPriorityEndpoints from '../../utils/EndpointPriorityLevelNumber/EndpointLowPriorityNumber';
-import countMediumPriorityEndpoints from '../../utils/EndpointPriorityLevelNumber/EndpointMediumPriorityNumber';
-import countHighPriorityEndpoints from '../../utils/EndpointPriorityLevelNumber/EndpointHighPriorityNumber';
-import countCriticalPriorityEndpoints from '../../utils/EndpointPriorityLevelNumber/EndpointCriticalyPriorityNumber';
-
-function PieArcLabel() {
+function PieArcLabel({totalEndpoints, lowEndpoints, mediumEndpoints, highEndpoints, criticalEndpoints}) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // États pour chaque statistique
+  const [total, setTotal] = useState(0);
+  const [low, setLow] = useState(0);
+  const [medium, setMedium] = useState(0);
+  const [high, setHigh] = useState(0);
+  const [critical, setCritical] = useState(0);
+
   useEffect(() => {
     async function fetchData() {
-      // On compte le nombre d'endpoints pour chaque niveau de dangerosité
-      const endpointsLowPriorityNumber = await countLowPriorityEndpoints();
-      const endpointsMediumPriorityNumber = await countMediumPriorityEndpoints();
-      const endpointsHighPriorityNumber = await countHighPriorityEndpoints();
-      const endpointsCriticalPriorityNumber = await countCriticalPriorityEndpoints();
+
+      // On utilise les props passées pour définir les états
+      setTotal(totalEndpoints);
+      setLow(lowEndpoints);
+      setMedium(mediumEndpoints);
+      setHigh(highEndpoints);
+      setCritical(criticalEndpoints);
 
       // On convertit les nombres d'endpoints en pourcentages
-      const endpointsLowPriorityPercentage = await PercentageConvertion(endpointsLowPriorityNumber);
-      const endpointsMediumPriorityPercentage = await PercentageConvertion(endpointsMediumPriorityNumber);
-      const endpointsHighPriorityPercentage = await PercentageConvertion(endpointsHighPriorityNumber);
-      const endpointsCriticalPriorityPercentage = await PercentageConvertion(endpointsCriticalPriorityNumber);
+      const endpointsLowPriorityPercentage = await PercentageConvertion(low, total);
+      const endpointsMediumPriorityPercentage = await PercentageConvertion(medium, total);
+      const endpointsHighPriorityPercentage = await PercentageConvertion(high, total);
+      const endpointsCriticalPriorityPercentage = await PercentageConvertion(critical, total);
 
       const pieData = [
-        { label: 'Low', value: endpointsLowPriorityPercentage, color: '#4CAF50' }, // Vert pour faible priorité
-        { label: 'Medium', value: endpointsMediumPriorityPercentage, color: 'yellow' }, // jaune pour priorité moyenne
-        { label: 'High', value: endpointsHighPriorityPercentage, color: '#FF9800' }, // Orange pour haute priorité
-        { label: 'Critical', value: endpointsCriticalPriorityPercentage, color: '#D32F2F' }, // Rouge foncé pour priorité critique
+        { label: 'Faible', value: endpointsLowPriorityPercentage, color: '#4CAF50' }, // Vert pour faible priorité
+        { label: 'Modéré', value: endpointsMediumPriorityPercentage, color: 'yellow' }, // jaune pour priorité moyenne
+        { label: 'Haut', value: endpointsHighPriorityPercentage, color: '#FF9800' }, // Orange pour haute priorité
+        { label: 'Critique', value: endpointsCriticalPriorityPercentage, color: '#D32F2F' }, // Rouge foncé pour priorité critique
       ];
 
       setData(pieData);
@@ -41,7 +44,7 @@ function PieArcLabel() {
     }
 
     fetchData();
-  }, []);
+  }, [total, low, medium, high, critical, totalEndpoints, lowEndpoints, mediumEndpoints, highEndpoints, criticalEndpoints]);
 
   // Affiche un spinner pendant le chargement
   if (loading) return <Loading text="Chargement du graphique circulaire..." />;

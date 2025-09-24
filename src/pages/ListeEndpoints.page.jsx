@@ -3,7 +3,7 @@ import SidebarToggle from '../components/Complements/SideBar.component';
 import Header from '../components/Complements/Header.component';
 import Footer from '../components/Complements/Footer.component';
 
-function Accueil() {
+function ListeEndpoints() {
 
   return (
     <div style={{ position: 'relative', minHeight: '100vh' }}>
@@ -34,4 +34,4 @@ function Accueil() {
   );
 }
 
-export default Accueil;
+export default ListeEndpoints;

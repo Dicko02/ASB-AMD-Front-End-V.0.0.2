@@ -2,8 +2,6 @@ import { useState, useEffect } from 'react';
 import { BarChart } from '@mui/x-charts/BarChart';
 import Loading from '../Complements/Loading.component';
 
-import AllCriticalyNumberPerMonth from '../../utils/CriticatlyLevelNumberAndDate/AllCriticalyNumberPerMonth';
-
 const formatValeur = (val) => `${val} endpoints`;
 
 const chartSettings = {
@@ -16,7 +14,7 @@ const chartSettings = {
   ],
 };
 
-function BarChartEndpoints() {
+function BarChartEndpoints({AllCriticalyNumberPerMonth}) {
   const [loading, setLoading] = useState(true);
   const [dataset, setDataset] = useState([]);
 
@@ -24,9 +22,9 @@ function BarChartEndpoints() {
     // Appel des données asynchrones
     async function fetchData() {
       try {
-        const CriticalyNumbers = await AllCriticalyNumberPerMonth();
-
-        const newDataset = CriticalyNumbers.map((item) => ({
+        // Transformation des données pour le BarChart
+        // On s'assure que chaque mois a une entrée, même si le nombre est 0
+        const newDataset = AllCriticalyNumberPerMonth.map((item) => ({
           mois: item.nom,
           faibles: item.low,
           modérés: item.medium,
@@ -43,7 +41,7 @@ function BarChartEndpoints() {
     }
 
     fetchData();
-  }, []);
+  }, [AllCriticalyNumberPerMonth]);
 
   if (loading) return <Loading text="Chargement des données du graphique..." />;
 
