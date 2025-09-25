@@ -68,7 +68,7 @@ function EndpointsList() {
     {
       field: 'CN',
       headerName: "Nom de l'endpoints",
-      width: 250,
+      width: 240,
       cellClassName: 'cell-center',
       //valueGetter: (params) => params?.row?.CN || "Inconnu",
     },
@@ -76,7 +76,7 @@ function EndpointsList() {
     {
       field: 'Nom',
       headerName: "Nom de l'endpoints",
-      width: 250,
+      width: 240,
       cellClassName: 'cell-center',
       //valueGetter: (params) => params?.row?.Nom || "Inconnu",
       hide: true, // invisible par défaut
@@ -214,7 +214,8 @@ function EndpointsList() {
 
 
   function viewDescription (row) {
-    navigate(`/Endpoints/${row.CN ?? row.Nom}`);// Redirection vers /api/CN ou /api/Nom (par exemple /api/LP-KAMARA)
+    const endpoint = row.CN ?? row.Nom ?? '';
+    navigate(`/Endpoints/${endpoint}`);// Redirection vers /api/CN ou /api/Nom (par exemple /api/LP-KAMARA)
   };
 
   const adminSessionStr = localStorage.getItem('adminSession'); // chaîne JSON
