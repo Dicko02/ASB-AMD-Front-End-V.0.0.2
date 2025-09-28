@@ -19,10 +19,9 @@ async function fetchConformitySetting() {
     );
 
     return response;
+    
   } catch (error) {
-    const message =
-      error.response?.data?.message ||
-      "Échec de la récupération des paramètres de conformités";
+    const message = error.response?.data?.message || "Échec de la récupération des paramètres de conformités";
     console.error("Erreur fetchConformitySetting:", message);
     throw new Error(message);
   }

@@ -2,11 +2,6 @@ import { useEffect, useState } from "react";
 import fetchLogsDownload from "../api/logsAPI/fetchLogsDownload.api";
 import logsFilterer from "../utils/logsFilterer";
 
-/*
- * - data (Array) : tableau de chaînes (logs)
- * - title (string)
- * - logType (string) : utilisé pour l'export
- */
 
 function LogsTable({data = [], title = "Logs", logType = "generic"}) {
   const [logs, setLogs] = useState(Array.isArray(data) ? data : []);
@@ -68,7 +63,16 @@ function LogsTable({data = [], title = "Logs", logType = "generic"}) {
 
   return (
     <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-5xl mx-auto" style={{backgroundColor: 'black', color: 'white', borderRadius: '12px'}}>
-      <div className="flex items-center justify-between mb-4">
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap", // autorisation du passage à la ligne
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: "1rem", // espacement entre les blocs
+          marginBottom: "1rem",
+        }}
+      >
         <h2 style={{
           fontSize: '30px',
           marginRight: '45%',

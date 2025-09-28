@@ -9,7 +9,7 @@ async function updateDangerosityNumber(updatedValues) {
     const { token } = JSON.parse(session);
     if (!token) throw new Error('Token manquant dans la session');
 
-    // On envoie directement les champs du schéma (pas conformityToCheck)
+    // On envoie directement les champs du schéma
     const response = await axios.put(`http://${import.meta.env.VITE_API_IP}:${import.meta.env.VITE_API_PORT}/api/conformityDangerosityNumber`,
       { updatedValues },
       {
@@ -20,10 +20,9 @@ async function updateDangerosityNumber(updatedValues) {
     );
 
     return response;
+    
   } catch (error) {
-    const message =
-      error.response?.data?.message ||
-      'Échec de la mise à jour de la table de dangerosité';
+    const message = error.response?.data?.message || 'Échec de la mise à jour de la table de dangerosité';
     console.error('Erreur updateDangerosityNumber:', message);
     throw new Error(message);
   }

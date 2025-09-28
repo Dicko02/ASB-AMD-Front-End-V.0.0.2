@@ -19,6 +19,7 @@ async function updateConformityTable({ selectedValues }) {
     );
 
     return response;
+    
   } catch (error) {
     const message = error.response?.data?.message || 'Échec de la mise à jour de la table de conformité';
     console.error('Erreur updateConformityTable:', message);

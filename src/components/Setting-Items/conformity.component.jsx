@@ -60,13 +60,9 @@ function ConformitySettingCheckboxForm() {
             setShowMessage(`❌ ${error.message}`);
         }
 
-        setTimeout(() => setMessageVisible(true), 10);
-        setTimeout(() => {
-            setMessageVisible(false);
-            setTimeout(() => setShowMessage(false), 500);
-        }, 3000);
-
-        setIsLoading(false); // 🟢 Fin du chargement
+        setIsLoading(false);
+        setMessageVisible(true);
+        setTimeout(() => setMessageVisible(false), 10000);
     };
 
     if (isLoading) {
@@ -116,10 +112,11 @@ function ConformitySettingCheckboxForm() {
                         marginBottom: '1.2rem', 
                         color: '#333', 
                         textAlign: 'center', 
-                        fontWeight: '600'
+                        fontWeight: '600',
+                        fontSize: '1.1rem'
                     }}
                 >
-                    Choisissez les conformites a applique :
+                    Choisissez les Conformites a Applique :
                 </h3>
                 {options.map(({ label, value }) => (
                     <div key={value}>

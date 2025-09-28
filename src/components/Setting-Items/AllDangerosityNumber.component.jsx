@@ -44,8 +44,10 @@ function AllDangerosityNumber() {
   };
 
   const handleSubmit = async (e) => {
+
     e.preventDefault();
     setLoading(true);
+    
     try {
       await updateDangerosityNumber(formData);
       setMsg("✅ Paramètres mis à jour avec succès");
@@ -54,9 +56,10 @@ function AllDangerosityNumber() {
       setMsg("❌ Erreur lors de la mise à jour : " + err.message);
       setError(true);
     }
+
     setLoading(false);
     setMsgVisible(true);
-    setTimeout(() => setMsgVisible(false), 3000);
+    setTimeout(() => setMsgVisible(false), 10000);
   };
 
   const renderArrayInputs = (section) => {
@@ -145,6 +148,18 @@ function AllDangerosityNumber() {
           margin: "2rem auto",
         }}
       >
+        <h3
+          style={{ 
+            marginBottom: '1.2rem', 
+            color: '#333', 
+            textAlign: 'center', 
+            fontWeight: '600',
+            fontSize: '1.1rem'
+          }}>
+
+            Définissez les Nombres de Points pour chaque Conformités:
+
+          </h3>
         {[
           "AntivirusActif",
           "AntivirusAJour",

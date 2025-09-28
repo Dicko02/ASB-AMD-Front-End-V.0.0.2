@@ -19,10 +19,9 @@ async function fetchConformityDangerosityNumber() {
     );
 
     return response;
+
   } catch (error) {
-    const message =
-      error.response?.data?.message ||
-      "Échec de la récupération des paramètres de dangerosité";
+    const message = error.response?.data?.message || "Échec de la récupération des paramètres de dangerosité";
     console.error("Erreur fetchConformityDangerosityNumber:", message);
     throw new Error(message);
   }
