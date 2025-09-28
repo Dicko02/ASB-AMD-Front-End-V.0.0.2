@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Appelle l'API pour mettre à jour les paramètres de conformité
-async function updateConformityTable({ adminId, selectedValues }) {
+async function updateConformityTable({ selectedValues }) {
   try {
     const session = localStorage.getItem('adminSession');
     if (!session) throw new Error('Session introuvable');
@@ -9,14 +9,14 @@ async function updateConformityTable({ adminId, selectedValues }) {
     const { token } = JSON.parse(session);
     if (!token) throw new Error('Token manquant dans la session');
 
-    const response = await axios.put(`http://${import.meta.env.VITE_API_IP}:${import.meta.env.VITE_API_PORT}/api/conformitySetting`, {
-      adminId,
-      conformityToCheck: selectedValues
-    }, {
-      headers: {
-        Authorization: `Bearer ${token}`,
+    const response = await axios.put(`http://${import.meta.env.VITE_API_IP}:${import.meta.env.VITE_API_PORT}/api/conformitySetting`,
+      { conformityToCheck: selectedValues },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }
-    });
+    );
 
     return response;
   } catch (error) {

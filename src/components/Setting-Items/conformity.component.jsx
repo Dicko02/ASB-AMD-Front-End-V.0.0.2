@@ -1,5 +1,6 @@
-import { useState } from 'react';
-import updateConformityTable from '../../api/settingAPI/conformity.api';
+import { useState, useEffect } from 'react';
+import updateConformityTable from '../../api/settingAPI/ConformitySetting/updateConformity.api';
+import getConformityTable from '../../api/settingAPI/ConformitySetting/getConformity.api';
 import Loading from '../Complements/Loading.component';
 
 function ConformitySettingCheckboxForm() {
@@ -21,6 +22,21 @@ function ConformitySettingCheckboxForm() {
     const [isError, setIsError] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
+    // Chargement des conformités existantes et cochage par défaut
+    useEffect(() => {
+        async function loadConformity() {
+            try {
+                const response = await getConformityTable();
+                // Récupère le tableau de conformités depuis l'API
+                const initialValues = response.data?.conformityToCheck || [];
+                setSelectedValues(initialValues);
+            } catch (error) {
+                console.error("Erreur lors du chargement des conformités:", error.message);
+            }
+        }
+        loadConformity();
+    }, []);
+
     const handleCheckboxChange = (event) => {
         const { value, checked } = event.target;
 
@@ -31,16 +47,12 @@ function ConformitySettingCheckboxForm() {
         }
     };
 
-    const adminSessionStr = localStorage.getItem('adminSession'); // chaîne JSON
-    const adminSession = JSON.parse(adminSessionStr); // maintenant un objet JS
-    const adminId = adminSession.id;
-
     const handleSubmit = async (event) => {
         event.preventDefault();
         setIsLoading(true); // 🔵 Commence le chargement
 
         try {
-            await updateConformityTable({ adminId, selectedValues });
+            await updateConformityTable({ selectedValues });
             setIsError(false);
             setShowMessage('✅ Changement Appliqué');
         } catch (error) {
@@ -90,6 +102,7 @@ function ConformitySettingCheckboxForm() {
                 onSubmit={handleSubmit}
                 style={{
                     maxWidth: 400,
+                    maxHeight: 500,
                     margin: '2rem auto',
                     padding: '1.5rem 2rem',
                     borderRadius: 8,

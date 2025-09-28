@@ -1,6 +1,7 @@
 import SidebarToggle from '../components/Complements/SideBar.component';
 import Header from '../components/Complements/Header.component';
-import ConformitySettingCheckboxForm from '../components/Setting-Items/conformity.component'
+import ConformitySettingCheckboxForm from '../components/Setting-Items/conformity.component';
+import AllDangerosityNumber from '../components/Setting-Items/AllDangerosityNumber.component';
 import Footer from '../components/Complements/Footer.component';
 
 function Setting() {
@@ -27,6 +28,7 @@ function Setting() {
           }}
         >
           {<ConformitySettingCheckboxForm />}
+          {<AllDangerosityNumber />}
         </div>
       </main>
       <Footer />
